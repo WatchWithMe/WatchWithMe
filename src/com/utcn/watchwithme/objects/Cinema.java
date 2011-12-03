@@ -1,0 +1,100 @@
+package com.utcn.watchwithme.objects;
+
+import java.io.Serializable;
+
+import com.google.android.maps.GeoPoint;
+
+public class Cinema implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private int id;
+	private String name;
+	private String location;
+	private GeoPoint geoPoint;
+	private boolean favorite;
+
+	private int icon = -1;
+
+	public Cinema() {
+	}
+
+	public Cinema(String name, String location, boolean favorite) {
+		this.name = name;
+		this.location = location;
+		this.favorite = favorite;
+		this.geoPoint = new GeoPoint(46773464, 23592505);
+	}
+
+	public Cinema(String name, String location, boolean favorite, int icon,
+			int lat, int lng) {
+		this.name = name;
+		this.location = location;
+		this.favorite = favorite;
+		this.geoPoint = new GeoPoint(lat, lng);
+		this.icon = icon;
+	}
+
+	public int getIcon() {
+		return this.icon;
+	}
+
+	@Override
+	public String toString() {
+		return name + " - " + location;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Cinema) {
+			Cinema x = (Cinema) o;
+			return this.name.equals(x.name) && this.location.equals(x.location);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return (37 + name.hashCode()) * 51 + location.hashCode();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public GeoPoint getGeoPoint() {
+		return geoPoint;
+	}
+
+	public void setGeoPoint(GeoPoint geoPoint) {
+		this.geoPoint = geoPoint;
+	}
+
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
+	}
+
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" >
+
+	<TextView
+		android:id="@+id/main_title"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginLeft="50dp"
+		android:text="Watch With Me"
+		android:textSize="30sp"
+		android:textStyle="bold">
+	</TextView>
+	
+	<LinearLayout
+		android:layout_width="300dp"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:orientation="vertical" >
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" >
+
+			<Button
+				android:id="@+id/button_cinema"
+				android:layout_height="150dp"
+				android:layout_width="60dp"
+				android:layout_weight="0.5"
+				android:background="@drawable/main_cinema_button"
+				android:textStyle="bold"
+				android:scaleType="fitXY"
+				android:layout_marginRight="20dp"
+				android:layout_marginBottom="20dp"
+				android:text="Cinemas" />
+
+			<Button
+				android:id="@+id/button_movies"
+				android:layout_height="150dp"
+				android:layout_width="60dp"
+				android:layout_weight="0.5"
+				android:background="@drawable/main_movie_button"
+				android:textStyle="bold"
+				android:scaleType="fitXY"
+				android:layout_marginLeft="20dp"
+				android:layout_marginBottom="20dp"
+				android:text="Movies" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" >
+
+			<Button
+				android:id="@+id/button_invitations"
+				android:layout_height="150dp"
+				android:layout_width="60dp"
+				android:layout_weight="0.5"
+				android:background="@drawable/main_invitation_button"
+				android:textStyle="bold"
+				android:scaleType="fitXY"
+				android:layout_marginRight="20dp"
+				android:layout_marginTop="20dp"
+				android:text="Invitations" />
+
+			<Button
+				android:id="@+id/button_reminders"
+				android:layout_height="150dp"
+				android:layout_width="60dp"
+				android:layout_weight="0.5"
+				android:background="@drawable/main_agenda_button"
+				android:textStyle="bold"
+				android:scaleType="fitXY"
+				android:layout_marginLeft="20dp"
+				android:layout_marginTop="20dp"
+				android:text="Agenda" />
+		</LinearLayout>
+	</LinearLayout>
+
+</RelativeLayout>
