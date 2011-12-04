@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" >
+
+	<ImageView
+		android:id="@+id/movie_item_icon"
+		android:layout_width="@dimen/movie_item_width"
+		android:layout_height="@dimen/movie_item_height"
+		android:layout_centerInParent="true"
+		android:scaleType="centerCrop" />
+
+	<TextView
+		android:id="@+id/movie_item_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/movie_item_icon"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="20dp"
+		android:singleLine="true"
+		android:text="demo title"
+		android:textSize="16sp" />
+
+	<!--
+    <LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="@dimen/movie_item_height"
+		android:layout_marginLeft="10dp"
+		android:layout_toRightOf="@id/movie_item_icon"
+		android:orientation="vertical" >
+
+		<TextView
+			android:id="@+id/movie_item_title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:singleLine="true"
+			android:textSize="16sp" />
+
+		<TextView
+			android:id="@+id/movie_item_director"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:singleLine="true"
+			android:text="demo director" />
+
+		<TextView
+			android:id="@+id/movie_item_length"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="right"
+			android:singleLine="true"
+			android:text="demo length" />
+	</LinearLayout>
+	-->
+
+</RelativeLayout>

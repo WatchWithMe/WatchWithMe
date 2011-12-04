@@ -50,7 +50,7 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 
 	private void onMoviesButtonPressed() {
 		/* Start movies activity */
-		Intent intent = new Intent(this, MovieListActivity.class);
+		Intent intent = new Intent(this, MovieGridActivity.class);
 		startActivity(intent);
 	}
 
