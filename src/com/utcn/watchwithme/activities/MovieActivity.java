@@ -15,6 +15,7 @@ public class MovieActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.movie_details_layout);
 
 		TextView tv = (TextView) findViewById(R.id.title001);
 		tv.setText(movie.getTitle());
