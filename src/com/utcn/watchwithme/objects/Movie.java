@@ -12,6 +12,7 @@ public class Movie implements Serializable {
 	private List<String> actors;
 	private int length; // in minutes
 	private int icon = -1;
+	private boolean ignored = false;
 
 	public Movie() {
 
@@ -73,6 +74,14 @@ public class Movie implements Serializable {
 
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	public boolean isIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
 	}
 
 }

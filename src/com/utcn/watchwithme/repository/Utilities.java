@@ -1,7 +1,7 @@
 package com.utcn.watchwithme.repository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import com.utcn.watchwithme.R;
@@ -24,7 +24,8 @@ public class Utilities {
 	public static ArrayList<Showtime> getShowtimesForCinema(Cinema cinema) {
 		ArrayList<Showtime> list = new ArrayList<Showtime>();
 		for (Showtime st : mShowtimesList) {
-			if (st.getCinema().equals(cinema)) {
+			if (st.getCinema().equals(cinema)
+					&& st.getMovie().isIgnored() == false) {
 				list.add(st);
 			}
 		}
@@ -52,13 +53,12 @@ public class Utilities {
 	}
 
 	public static void ignorMovie(Movie m) {
-		mMoviesList.remove(m);
-		Iterator<Showtime> it = mShowtimesList.iterator();
-		while (it.hasNext()) {
-			Showtime st = it.next();
-			if (st.getMovie() == m) {
-				it.remove();
-			}
+		m.setIgnored(true);
+	}
+
+	public static void unignoreMovies() {
+		for (Movie m : mMoviesList) {
+			m.setIgnored(false);
 		}
 	}
 
@@ -88,6 +88,26 @@ public class Utilities {
 
 	public static void setSelectedMovie(Movie selectedMovie) {
 		Utilities.selectedMovie = selectedMovie;
+	}
+
+	public static ArrayList<Movie> getAllMovies() {
+		ArrayList<Movie> movies = new ArrayList<Movie>();
+		for (Movie m : mMoviesList) {
+			if (m.isIgnored() == false) {
+				movies.add(m);
+			}
+		}
+		return movies;
+	}
+
+	public static List<Movie> findMoviesByTitle(String title) {
+		ArrayList<Movie> movies = new ArrayList<Movie>();
+		for (Movie m : mMoviesList) {
+			if (m.getTitle().contains(title)) {
+				movies.add(m);
+			}
+		}
+		return movies;
 	}
 
 	public static void loadApplicationData() {
@@ -153,59 +173,77 @@ public class Utilities {
 			/* Get Showtimess list */
 			Random rand = new Random();
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(3), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
 					.get(0), rand.nextInt() % 5 + 10));
 			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList
 					.get(0), rand.nextInt() % 5 + 10));
 			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList
 					.get(0), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(7), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
 					.get(0), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
+					.get(0), rand.nextInt() % 5 + 10));
+			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
+					.get(0), rand.nextInt() % 5 + 10));
+			mShowtimesList.add(new Showtime(mMoviesList.get(3), mCinemasList
 					.get(0), rand.nextInt() % 5 + 10));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(3), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
 					.get(1), rand.nextInt() % 5 + 10));
 			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList
 					.get(1), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(6), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList
+					.get(1), rand.nextInt() % 5 + 10));
+			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
+					.get(1), rand.nextInt() % 5 + 10));
+			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
+					.get(1), rand.nextInt() % 5 + 10));
+			mShowtimesList.add(new Showtime(mMoviesList.get(7), mCinemasList
 					.get(1), rand.nextInt() % 5 + 10));
 			mShowtimesList.add(new Showtime(mMoviesList.get(8), mCinemasList
 					.get(1), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(11), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(12), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
 					.get(1), rand.nextInt() % 5 + 10));
 
 			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
 					.get(2), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(10), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(12), mCinemasList
 					.get(2), rand.nextInt() % 5 + 10));
 			mShowtimesList.add(new Showtime(mMoviesList.get(13), mCinemasList
 					.get(2), rand.nextInt() % 5 + 10));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(8), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(6), mCinemasList
+					.get(3), rand.nextInt() % 5 + 10));
+			mShowtimesList.add(new Showtime(mMoviesList.get(10), mCinemasList
 					.get(3), rand.nextInt() % 5 + 10));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(7), mCinemasList
+			mShowtimesList.add(new Showtime(mMoviesList.get(11), mCinemasList
 					.get(4), rand.nextInt() % 5 + 10));
-			mShowtimesList.add(new Showtime(mMoviesList.get(10), mCinemasList
-					.get(4), rand.nextInt() % 5 + 10));
-
 		}
-	}
 
-	public static ArrayList<Movie> getAllMovies() {
-		return mMoviesList;
+		// sort movies by name
+		for (int i = 0; i < mMoviesList.size(); i++) {
+			for (int j = i + 1; j < mMoviesList.size(); j++) {
+				Movie mi = mMoviesList.get(i);
+				Movie mj = mMoviesList.get(j);
+				if (mi.getTitle().compareToIgnoreCase(mj.getTitle()) > 0) {
+					mMoviesList.set(i, mj);
+					mMoviesList.set(j, mi);
+				}
+			}
+		}
+
+		// sort showtimes by movie title
+		for (int i = 0; i < mShowtimesList.size(); i++) {
+			for (int j = i + 1; j < mShowtimesList.size(); j++) {
+				Showtime si = mShowtimesList.get(i);
+				Showtime sj = mShowtimesList.get(j);
+				if (si.getMovie().getTitle()
+						.compareToIgnoreCase(sj.getMovie().getTitle()) > 0) {
+					mShowtimesList.set(i, sj);
+					mShowtimesList.set(j, si);
+				}
+			}
+		}
 	}
 }

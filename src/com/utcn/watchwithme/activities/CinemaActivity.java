@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -147,6 +148,19 @@ public class CinemaActivity extends Activity {
 		alert.setIcon(R.drawable.icon);
 		alert.show();
 
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			Log.i(DEBUG_TAG, "MENU pressed");
+			Utilities.unignoreMovies();
+			showtimes = Utilities.getShowtimesForCinema(cinema);
+			((ListView) findViewById(R.id.showtime_list_view))
+					.setAdapter(new ShowtimeAdapter(this, showtimes));
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	private void goToMovieActivity(int position) {
