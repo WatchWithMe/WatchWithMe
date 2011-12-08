@@ -70,7 +70,6 @@ public class GoogleMapsActivity extends MapActivity {
 						}
 					});
 			ad.show();
-			return;
 		}
 
 		initialize();

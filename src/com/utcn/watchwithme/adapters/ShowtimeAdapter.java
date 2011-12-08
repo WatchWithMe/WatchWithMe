@@ -66,7 +66,7 @@ public class ShowtimeAdapter extends BaseAdapter {
 			holder.image.setImageDrawable(res.getDrawable(showtime.getMovie()
 					.getIcon()));
 		holder.title.setText(showtime.getMovie().getTitle());
-		holder.hours.setText(showtime.getDateString());
+		holder.hours.setText(showtime.getHours());
 		holder.price.setText(showtime.getPriceString());
 
 		return convertView;

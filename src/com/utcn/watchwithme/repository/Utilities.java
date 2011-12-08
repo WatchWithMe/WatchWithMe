@@ -217,51 +217,72 @@ public class Utilities {
 			Random rand = new Random();
 
 			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(3), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10));
+					.get(0), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 
 			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(7), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(8), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10));
+					.get(1), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 
 			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(2), rand.nextInt() % 5 + 10));
+					.get(2), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(12), mCinemasList
-					.get(2), rand.nextInt() % 5 + 10));
+					.get(2), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(13), mCinemasList
-					.get(2), rand.nextInt() % 5 + 10));
+					.get(2), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 
 			mShowtimesList.add(new Showtime(mMoviesList.get(6), mCinemasList
-					.get(3), rand.nextInt() % 5 + 10));
+					.get(3), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 			mShowtimesList.add(new Showtime(mMoviesList.get(10), mCinemasList
-					.get(3), rand.nextInt() % 5 + 10));
+					.get(3), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 
 			mShowtimesList.add(new Showtime(mMoviesList.get(11), mCinemasList
-					.get(4), rand.nextInt() % 5 + 10));
+					.get(4), rand.nextInt() % 5 + 10,
+					"09.12;10.12;11.12 16:00;17:30;21:15"));
 		}
 
 		// sort movies by name
