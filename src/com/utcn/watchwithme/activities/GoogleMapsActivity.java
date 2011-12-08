@@ -10,11 +10,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -24,6 +28,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.utcn.watchwithme.R;
+import com.utcn.watchwithme.internet.NetworkUtilities;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.repository.Utilities;
 
@@ -33,16 +38,19 @@ public class GoogleMapsActivity extends MapActivity {
 
 	private MapView mapView;
 	private MapController mc;
-	private MapItemizedOverlay overlay;
+	private MapItemizedOverlay overlay, userOverlay;
 	private List<Overlay> mapOverlays;
 	private Cinema cinema = Utilities.getSelectedCinema();
+	private GeoPoint myLocation;
+
+	private static final int ZOOM_LEVEL = 16;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 
-		if (!internetConection()) {
+		if (!NetworkUtilities.internetConection(this)) {
 			AlertDialog ad = new AlertDialog.Builder(this).create();
 			ad.setMessage("No internet connection");
 			ad.setButton("OK",
@@ -66,11 +74,44 @@ public class GoogleMapsActivity extends MapActivity {
 		}
 
 		initialize();
+		startGPS();
 	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.map_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.cinema_menu_option:
+			mc.animateTo(cinema.getGeoPoint());
+			mc.setZoom(ZOOM_LEVEL);
+			break;
+		case R.id.directions_menu_option:
+			findDirections(myLocation, getCinemaGeoPoint());
+			break;
+		case R.id.user_position_menu_option:
+			if (myLocation != null) {
+				mc.animateTo(myLocation);
+				mc.setZoom(ZOOM_LEVEL);
+			} else {
+				Toast.makeText(
+						getApplicationContext(),
+						"Unable to determine your location.\nPlease turn on your GPS.",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
+		}
+		return true;
 	}
 
 	private void initialize() {
@@ -80,7 +121,7 @@ public class GoogleMapsActivity extends MapActivity {
 		// move the view to see the cinema
 		mc = mapView.getController();
 		mc.animateTo(cinema.getGeoPoint());
-		mc.setZoom(15);
+		mc.setZoom(ZOOM_LEVEL);
 
 		mapOverlays = mapView.getOverlays();
 		overlay = new MapItemizedOverlay(this.getResources().getDrawable(
@@ -119,6 +160,10 @@ public class GoogleMapsActivity extends MapActivity {
 		return cinema.getGeoPoint();
 	}
 
+	public GeoPoint getMyGeoPoint() {
+		return myLocation;
+	}
+
 	public String getAddress(GeoPoint p) {
 		String add = "";
 		Geocoder geoCoder = new Geocoder(getBaseContext(), Locale.getDefault());
@@ -138,16 +183,76 @@ public class GoogleMapsActivity extends MapActivity {
 		return add;
 	}
 
-	private boolean internetConection() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) this
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+	private void startGPS() {
+		Log.i(DEBUG_TAG, "Starting GPS...");
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationListener ll = new MyLocationListener();
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 5, ll);
 
-		if (networkInfo == null || !networkInfo.isConnected()) {
-			return false;
-		} else {
-			int netType = networkInfo.getType();
-			return (netType == ConnectivityManager.TYPE_WIFI || netType == ConnectivityManager.TYPE_MOBILE);
+		Log.i(DEBUG_TAG, "Obtaining last known location");
+		Location lastLocation = lm
+				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		if (lastLocation != null) {
+			setMyLocation(new GeoPoint(
+					(int) (lastLocation.getLatitude() * 1E6),
+					(int) (lastLocation.getLongitude() * 1E6)));
 		}
+	}
+
+	private class MyLocationListener implements LocationListener {
+		@Override
+		public void onLocationChanged(Location location) {
+			if (location != null) {
+				GoogleMapsActivity.this.setMyLocation(new GeoPoint(
+						(int) (location.getLatitude() * 1E6), (int) (location
+								.getLongitude() * 1E6)));
+			}
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			if (provider.equals(LocationManager.GPS_PROVIDER)
+					&& GoogleMapsActivity.this.hasWindowFocus()) {
+				AlertDialog ad = new AlertDialog.Builder(
+						GoogleMapsActivity.this).create();
+				ad.setMessage("GPS was turned off");
+				ad.setButton("OK",
+						new android.content.DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+
+				ad.show();
+			}
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}
+
+	}
+
+	private void setMyLocation(GeoPoint myLocation) {
+		Log.i(DEBUG_TAG, "set my location at = " + myLocation.getLatitudeE6()
+				+ "," + myLocation.getLongitudeE6());
+		this.myLocation = myLocation;
+
+		if (userOverlay == null) {
+			userOverlay = new MapItemizedOverlay(this.getResources()
+					.getDrawable(R.drawable.pinpoint_human), this);
+			mapOverlays.add(userOverlay);
+		} else {
+			userOverlay.clear();
+		}
+
+		userOverlay.addOverlay(new OverlayItem(myLocation, "You", ""));
+		mapView.invalidate();
 	}
 }

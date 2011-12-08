@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/cinema_menu_option"
+        android:title="Cinema" />  
+    <item android:id="@+id/user_position_menu_option"
+        android:title="Your location" />    
+    <item android:id="@+id/directions_menu_option"
+        android:title="Directions" />    
+</menu>

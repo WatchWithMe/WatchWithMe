@@ -52,7 +52,7 @@ public class Utilities {
 		mShowtimesList.remove(st);
 	}
 
-	public static void ignorMovie(Movie m) {
+	public static void ignoreMovie(Movie m) {
 		m.setIgnored(true);
 	}
 
@@ -110,6 +110,33 @@ public class Utilities {
 		return movies;
 	}
 
+	public static void sortShowtimesByMovieTitle() {
+		for (int i = 0; i < mShowtimesList.size(); i++) {
+			for (int j = i + 1; j < mShowtimesList.size(); j++) {
+				Showtime si = mShowtimesList.get(i);
+				Showtime sj = mShowtimesList.get(j);
+				if (si.getMovie().getTitle()
+						.compareToIgnoreCase(sj.getMovie().getTitle()) > 0) {
+					mShowtimesList.set(i, sj);
+					mShowtimesList.set(j, si);
+				}
+			}
+		}
+	}
+
+	public static void sortShowtimesByMoviePrice() {
+		for (int i = 0; i < mShowtimesList.size(); i++) {
+			for (int j = i + 1; j < mShowtimesList.size(); j++) {
+				Showtime si = mShowtimesList.get(i);
+				Showtime sj = mShowtimesList.get(j);
+				if (si.getPrice() > sj.getPrice()) {
+					mShowtimesList.set(i, sj);
+					mShowtimesList.set(j, si);
+				}
+			}
+		}
+	}
+
 	public static void loadApplicationData() {
 		/* Hardcoded, replace with real thing */
 		if (mCinemasList.isEmpty()) {
@@ -118,12 +145,12 @@ public class Utilities {
 					.add(new Cinema(
 							"Odeon Cineplex",
 							"Polus Center, Str. Avram Iancu, nr. 492 - 500, comuna Floresti, Cluj-Napoca",
-							false, R.drawable.cinema_odeon, 46749267, 23530730));
+							true, R.drawable.cinema_odeon, 46749267, 23530730));
 			mCinemasList.add(new Cinema("Cinema City",
 					"Str Alexandru Vaida Voievod, Nr. 53-55 (Iulius Mall)",
-					true, R.drawable.cinema_city, 46771761, 23625906));
+					false, R.drawable.cinema_city, 46771761, 23625906));
 			mCinemasList.add(new Cinema("Florin Piersic",
-					"P-ta Mihai Viteazul nr.11", false,
+					"P-ta Mihai Viteazul nr.11", true,
 					R.drawable.cinema_florin_piersic, 46772217, 23587689));
 			mCinemasList.add(new Cinema("Cinema Victoria",
 					"B-dul Eroilor nr.51", false, R.drawable.cinema_victoria,
@@ -234,16 +261,6 @@ public class Utilities {
 		}
 
 		// sort showtimes by movie title
-		for (int i = 0; i < mShowtimesList.size(); i++) {
-			for (int j = i + 1; j < mShowtimesList.size(); j++) {
-				Showtime si = mShowtimesList.get(i);
-				Showtime sj = mShowtimesList.get(j);
-				if (si.getMovie().getTitle()
-						.compareToIgnoreCase(sj.getMovie().getTitle()) > 0) {
-					mShowtimesList.set(i, sj);
-					mShowtimesList.set(j, si);
-				}
-			}
-		}
+		sortShowtimesByMovieTitle();
 	}
 }

@@ -1,15 +1,14 @@
 package com.utcn.watchwithme.objects;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Movie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String title;
-	private String director;
-	private List<String> actors;
+	private String details;
+	private String trailerURL;
 	private int length; // in minutes
 	private int icon = -1;
 	private boolean ignored = false;
@@ -18,13 +17,13 @@ public class Movie implements Serializable {
 
 	}
 
-	public Movie(String title) {
-		this.title = title;
-	}
-
 	public Movie(String title, int icon) {
 		this.title = title;
 		this.icon = icon;
+		this.details = "";
+		this.trailerURL = "";
+		this.length = 100;
+		this.id = 0;
 	}
 
 	@Override
@@ -52,20 +51,12 @@ public class Movie implements Serializable {
 		this.title = title;
 	}
 
-	public String getDirector() {
-		return director;
+	public String getDetails() {
+		return details;
 	}
 
-	public void setDirector(String director) {
-		this.director = director;
-	}
-
-	public List<String> getActors() {
-		return actors;
-	}
-
-	public void setActors(List<String> actors) {
-		this.actors = actors;
+	public void setDetails(String details) {
+		this.details = details;
 	}
 
 	public int getLength() {
@@ -84,4 +75,11 @@ public class Movie implements Serializable {
 		this.ignored = ignored;
 	}
 
+	public String getTrailerURL() {
+		return trailerURL;
+	}
+
+	public void setTrailerURL(String trailerURL) {
+		this.trailerURL = trailerURL;
+	}
 }

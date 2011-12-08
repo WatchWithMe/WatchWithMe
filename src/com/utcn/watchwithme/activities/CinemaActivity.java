@@ -10,7 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -32,20 +33,19 @@ public class CinemaActivity extends Activity {
 	private final String DEBUG_TAG = "CinemaActivity";
 	private final int INVITE = 1;
 	private final int REMIND = 2;
-	private final int IGNOR = 3;
+	private final int IGNORE = 3;
 	private int menuSelection;
 
 	private Cinema cinema = Utilities.getSelectedCinema();
 	private ArrayList<Showtime> showtimes = Utilities
 			.getShowtimesForCinema(cinema);
 	private Showtime pressedShowtime;
-	private Activity activity;
+	private ListView listview;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cinema_details_layout);
-		activity = this;
 
 		TextView tv;
 		tv = (TextView) findViewById(R.id.cinema_full_name);
@@ -53,10 +53,10 @@ public class CinemaActivity extends Activity {
 		tv = (TextView) findViewById(R.id.cinema_full_location);
 		tv.setText(cinema.getLocation());
 
-		ListView lv = (ListView) findViewById(R.id.showtime_list_view);
-		lv.setAdapter(new ShowtimeAdapter(this, showtimes));
+		listview = (ListView) findViewById(R.id.showtime_list_view);
+		refreshContent();
 
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -64,7 +64,38 @@ public class CinemaActivity extends Activity {
 			}
 		});
 
-		registerForContextMenu(lv);
+		registerForContextMenu(listview);
+	}
+
+	private void refreshContent() {
+		showtimes = Utilities.getShowtimesForCinema(cinema);
+		listview.setAdapter(new ShowtimeAdapter(this, showtimes));
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.cinema_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.unignore_menu_option:
+			Utilities.unignoreMovies();
+			refreshContent();
+			break;
+		case R.id.name_sort_menu_option:
+			Utilities.sortShowtimesByMovieTitle();
+			refreshContent();
+			break;
+		case R.id.price_sort_menu_option:
+			Utilities.sortShowtimesByMoviePrice();
+			refreshContent();
+			break;
+		}
+		return true;
 	}
 
 	@Override
@@ -86,7 +117,7 @@ public class CinemaActivity extends Activity {
 				inviteMenu.add(d.toString());
 				remindMenu.add(d.toString());
 			}
-			menu.add(IGNOR, IGNOR, 0, "Ignore Movie");
+			menu.add(IGNORE, IGNORE, 0, "Ignore Movie");
 		}
 	}
 
@@ -100,8 +131,8 @@ public class CinemaActivity extends Activity {
 		case REMIND:
 			menuSelection = REMIND;
 			break;
-		case IGNOR:
-			ignorConfirmation();
+		case IGNORE:
+			ignoreConfirmation();
 			break;
 		default:
 			switch (menuSelection) {
@@ -120,19 +151,16 @@ public class CinemaActivity extends Activity {
 		return super.onContextItemSelected(item);
 	}
 
-	private void ignorConfirmation() {
+	private void ignoreConfirmation() {
 		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		alt_bld.setMessage("Do you really want to ignor this movie ?")
+		alt_bld.setMessage("Do you really want to ignore this movie ?")
 				.setCancelable(false)
 				.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								Utilities.ignorMovie(pressedShowtime.getMovie());
-								showtimes = Utilities
-										.getShowtimesForCinema(cinema);
-								ListView lv = (ListView) findViewById(R.id.showtime_list_view);
-								lv.setAdapter(new ShowtimeAdapter(activity,
-										showtimes));
+								Utilities.ignoreMovie(pressedShowtime
+										.getMovie());
+								refreshContent();
 								Log.i(DEBUG_TAG, "Clicked on Yes Button");
 							}
 						})
@@ -143,24 +171,11 @@ public class CinemaActivity extends Activity {
 					}
 				});
 		AlertDialog alert = alt_bld.create();
-		alert.setTitle("Ignor " + pressedShowtime.getMovie().getTitle());
+		alert.setTitle("Ignore " + pressedShowtime.getMovie().getTitle());
 		// Icon for AlertDialog
 		alert.setIcon(R.drawable.icon);
 		alert.show();
 
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			Log.i(DEBUG_TAG, "MENU pressed");
-			Utilities.unignoreMovies();
-			showtimes = Utilities.getShowtimesForCinema(cinema);
-			((ListView) findViewById(R.id.showtime_list_view))
-					.setAdapter(new ShowtimeAdapter(this, showtimes));
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 
 	private void goToMovieActivity(int position) {
