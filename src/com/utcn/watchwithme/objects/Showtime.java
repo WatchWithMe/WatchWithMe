@@ -1,39 +1,55 @@
 package com.utcn.watchwithme.objects;
 
-import java.util.ArrayList;
-
 public class Showtime {
 
 	private Movie movie;
 	private Cinema cinema;
-	private ArrayList<Time> dates;
+	private String[] dates;
+	private String hours;
 	private double price;
 
 	public Showtime() {
 	}
 
-	public Showtime(Movie movie, Cinema cinema, double price) {
+	/**
+	 * 
+	 * @param movie
+	 * @param cinema
+	 * @param price
+	 * @param showtimes
+	 *            showtimes DD.MM;DD.MM HH.MM;HH.MM (i.e. day.month;day.month;
+	 *            and so on [space] hour:minute;hour:minute; and so on)
+	 */
+	public Showtime(Movie movie, Cinema cinema, double price, String showtimes) {
 		this.movie = movie;
 		this.cinema = cinema;
-		dates = new ArrayList<Time>();
-		dates.add(new Time());
-		dates.add(new Time(18, 30));
-		dates.add(new Time(21, 15));
 		this.price = price;
+		String s[] = showtimes.split("[ ]", 2);
+		this.hours = s[1];
+
+		String d[] = s[0].split("[;]");
+		String h[] = s[1].split("[;]");
+
+		dates = new String[h.length * d.length];
+		for (int i = 0; i < d.length; i++) {
+			for (int j = 0; j < h.length; j++) {
+				dates[i * h.length + j] = d[i] + " - " + h[j];
+			}
+		}
+	}
+
+	public String[] getShowtimes() {
+		return dates;
+	}
+
+	public String getHours() {
+		return hours;
 	}
 
 	public String getPriceString() {
 		int euro = (int) price;
 		int cents = (int) ((price - euro) * 100);
 		return euro + "." + ((cents > 9) ? cents : ("0" + cents)) + " RON";
-	}
-
-	public String getDateString() {
-		String hours = "";
-		for (Time d : dates) {
-			hours += d.toString() + "; ";
-		}
-		return hours;
 	}
 
 	public Movie getMovie() {
@@ -50,14 +66,6 @@ public class Showtime {
 
 	public void setCinema(Cinema cinema) {
 		this.cinema = cinema;
-	}
-
-	public ArrayList<Time> getDate() {
-		return dates;
-	}
-
-	public void setDate(ArrayList<Time> date) {
-		this.dates = date;
 	}
 
 	public double getPrice() {
