@@ -25,7 +25,6 @@ import com.utcn.watchwithme.adapters.ShowtimeAdapter;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.objects.Reminder;
 import com.utcn.watchwithme.objects.Showtime;
-import com.utcn.watchwithme.objects.Time;
 import com.utcn.watchwithme.repository.Utilities;
 
 public class CinemaActivity extends Activity {
@@ -112,10 +111,10 @@ public class CinemaActivity extends Activity {
 			SubMenu inviteMenu = menu.addSubMenu(INVITE, INVITE, 0, "Invite");
 			SubMenu remindMenu = menu
 					.addSubMenu(REMIND, REMIND, 0, "Remind Me");
-			ArrayList<Time> dates = pressedShowtime.getDate();
-			for (Time d : dates) {
-				inviteMenu.add(d.toString());
-				remindMenu.add(d.toString());
+			String dates[] = pressedShowtime.getShowtimes();
+			for (int i = 0; i < dates.length; i++) {
+				inviteMenu.add(dates[i]);
+				remindMenu.add(dates[i]);
 			}
 			menu.add(IGNORE, IGNORE, 0, "Ignore Movie");
 		}
