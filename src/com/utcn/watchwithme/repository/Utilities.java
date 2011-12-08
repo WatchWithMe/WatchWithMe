@@ -100,6 +100,22 @@ public class Utilities {
 		return movies;
 	}
 
+	public static ArrayList<Movie> searchForMovie(String s) {
+		if (s == null) {
+			return getAllMovies();
+		} else {
+			s = s.trim().toLowerCase();
+			ArrayList<Movie> result = new ArrayList<Movie>();
+			for (Movie m : mMoviesList) {
+				if ((m.isIgnored() == false)
+						&& (m.getTitle().toLowerCase().contains(s))) {
+					result.add(m);
+				}
+			}
+			return result;
+		}
+	}
+
 	public static List<Movie> findMoviesByTitle(String title) {
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		for (Movie m : mMoviesList) {

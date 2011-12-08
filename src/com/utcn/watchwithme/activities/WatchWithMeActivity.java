@@ -43,8 +43,6 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 	private void onCinemasButtonPressed() {
 		/* Handle click here */
 		Intent intent = new Intent(this, CinemaTabWidget.class);
-		// Utilities.setSelectedCinema(Utilities.getAllCinemas().get(0));
-		// Intent intent = new Intent(this, CinemaActivity.class);
 		startActivity(intent);
 	}
 
@@ -56,10 +54,14 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 
 	private void onNotificationsButtonPressed() {
 		/* Handle click here */
+		Intent intent = new Intent(this, AgendaActivity.class);
+		startActivity(intent);
 	}
 
 	private void onRemindersButtonPressed() {
 		/* Handle click here */
+		Intent intent = new Intent(this, AgendaActivity.class);
+		startActivity(intent);
 	}
 
 	@Override

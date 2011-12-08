@@ -175,7 +175,6 @@ public class CinemaActivity extends Activity {
 		// Icon for AlertDialog
 		alert.setIcon(R.drawable.icon);
 		alert.show();
-
 	}
 
 	private void goToMovieActivity(int position) {

@@ -54,6 +54,11 @@
 		</activity>
 		
 		<activity 
+		    android:name=".activities.AgendaActivity"
+		    android:theme="@android:style/Theme.NoTitleBar">		    
+		</activity>
+		
+		<activity 
 		    android:name=".activities.GoogleMapsActivity"
 		    android:theme="@android:style/Theme.NoTitleBar">		    
 		</activity>
