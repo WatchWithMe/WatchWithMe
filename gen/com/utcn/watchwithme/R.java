@@ -56,6 +56,7 @@ public final class R {
         public static final int red_flag=0x7f020026;
         public static final int star_icon=0x7f020027;
         public static final int star_icon_selected=0x7f020028;
+        public static final int youtube_logo=0x7f020029;
     }
     public static final class id {
         public static final int agendatext=0x7f070000;
@@ -69,28 +70,35 @@ public final class R {
         public static final int cinema_icon=0x7f070005;
         public static final int cinema_list_text=0x7f070009;
         public static final int cinema_location=0x7f070007;
-        public static final int cinema_menu_option=0x7f07001d;
+        public static final int cinema_menu_option=0x7f070024;
         public static final int cinema_name=0x7f070006;
-        public static final int directions_menu_option=0x7f07001f;
-        public static final int edittext=0x7f070011;
-        public static final int grid=0x7f070012;
+        public static final int directions_menu_option=0x7f070026;
+        public static final int edittext=0x7f070018;
+        public static final int grid=0x7f070019;
         public static final int main_title=0x7f07000a;
         public static final int mapView=0x7f07000f;
         public static final int map_button=0x7f070002;
-        public static final int movie_item_icon=0x7f070013;
-        public static final int movie_item_title=0x7f070014;
-        public static final int name_sort_menu_option=0x7f07001b;
-        public static final int price_sort_menu_option=0x7f07001c;
-        public static final int relativeLayout1=0x7f070015;
-        public static final int showtime_hours=0x7f070018;
-        public static final int showtime_image=0x7f070016;
+        public static final int movie_detail_icon=0x7f070011;
+        public static final int movie_detail_rate_button=0x7f070015;
+        public static final int movie_detail_rating=0x7f070014;
+        public static final int movie_detail_rating_text=0x7f070016;
+        public static final int movie_detail_title=0x7f070010;
+        public static final int movie_item_icon=0x7f07001a;
+        public static final int movie_item_title=0x7f07001b;
+        public static final int movie_youtube=0x7f070012;
+        public static final int name_sort_menu_option=0x7f070022;
+        public static final int price_sort_menu_option=0x7f070023;
+        public static final int rate_text=0x7f070013;
+        public static final int relativeLayout1=0x7f07001c;
+        public static final int showtime_hours=0x7f07001f;
+        public static final int showtime_image=0x7f07001d;
         public static final int showtime_list_view=0x7f070004;
-        public static final int showtime_price=0x7f070019;
-        public static final int showtime_title=0x7f070017;
-        public static final int title001=0x7f070010;
-        public static final int unignore1_menu_option=0x7f070020;
-        public static final int unignore_menu_option=0x7f07001a;
-        public static final int user_position_menu_option=0x7f07001e;
+        public static final int showtime_price=0x7f070020;
+        public static final int showtime_title=0x7f07001e;
+        public static final int title001=0x7f070017;
+        public static final int unignore1_menu_option=0x7f070027;
+        public static final int unignore_menu_option=0x7f070021;
+        public static final int user_position_menu_option=0x7f070025;
     }
     public static final class layout {
         public static final int agenda_layout=0x7f030000;
@@ -100,10 +108,11 @@ public final class R {
         public static final int cinema_tab_layout=0x7f030004;
         public static final int main=0x7f030005;
         public static final int map=0x7f030006;
-        public static final int movie_details_layout=0x7f030007;
-        public static final int movie_grid_layout=0x7f030008;
-        public static final int movie_list_item=0x7f030009;
-        public static final int showtime_list_item=0x7f03000a;
+        public static final int movie_detail=0x7f030007;
+        public static final int movie_details_layout=0x7f030008;
+        public static final int movie_grid_layout=0x7f030009;
+        public static final int movie_list_item=0x7f03000a;
+        public static final int showtime_list_item=0x7f03000b;
     }
     public static final class menu {
         public static final int cinema_menu=0x7f060000;

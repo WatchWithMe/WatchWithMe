@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content" >
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical" >
+
+		<TextView
+			android:id="@+id/movie_detail_title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_margin="20dp"
+			android:gravity="center_horizontal"
+			android:text="demo title"
+			android:textSize="26sp" />
+
+		<ImageView
+			android:id="@+id/movie_detail_icon"
+			android:layout_width="120dp"
+			android:layout_height="150dp"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/movie_detail_title" />
+
+		<ImageView
+			android:id="@+id/movie_youtube"
+			android:layout_width="fill_parent"
+			android:layout_height="150dp"
+			android:layout_alignParentRight="true"
+			android:layout_below="@+id/movie_detail_title"
+			android:layout_toRightOf="@id/movie_detail_icon"
+			android:src="@drawable/youtube_logo" />
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignLeft="@id/movie_youtube"
+			android:layout_alignRight="@id/movie_youtube"
+			android:layout_below="@id/movie_youtube"
+			android:layout_marginTop="5dp"
+			android:gravity="center_horizontal"
+			android:text="Watch trailer on youtube"
+			android:textSize="16sp" />
+
+		<TextView
+			android:id="@+id/rate_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/movie_youtube"
+			android:layout_marginTop="30dp"
+			android:gravity="center_horizontal"
+			android:text="Rate this movie!"
+			android:textSize="16sp" />
+
+		<RatingBar
+			android:id="@+id/movie_detail_rating"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/rate_text"
+			android:layout_marginTop="2dp"
+			android:max="5"
+			android:numStars="5" />
+
+		<Button
+			android:id="@+id/movie_detail_rate_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/movie_detail_rating"
+			android:layout_margin="10dp"
+			android:text="Rate it!" />
+
+		<TextView
+			android:id="@+id/movie_detail_rating_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@id/movie_detail_rate_button"
+			android:layout_alignTop="@id/movie_detail_rate_button"
+			android:layout_below="@id/movie_detail_rating"
+			android:layout_toRightOf="@id/movie_detail_rate_button"
+			android:gravity="center"
+			android:text="rate = demo rate" />
+	</RelativeLayout>
+
+</ScrollView>

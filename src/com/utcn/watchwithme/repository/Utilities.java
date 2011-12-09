@@ -24,8 +24,7 @@ public class Utilities {
 	public static ArrayList<Showtime> getShowtimesForCinema(Cinema cinema) {
 		ArrayList<Showtime> list = new ArrayList<Showtime>();
 		for (Showtime st : mShowtimesList) {
-			if (st.getCinema().equals(cinema)
-					&& st.getMovie().isIgnored() == false) {
+			if (st.getCinema().equals(cinema) && st.getMovie().isIgnored() == false) {
 				list.add(st);
 			}
 		}
@@ -107,8 +106,7 @@ public class Utilities {
 			s = s.trim().toLowerCase();
 			ArrayList<Movie> result = new ArrayList<Movie>();
 			for (Movie m : mMoviesList) {
-				if ((m.isIgnored() == false)
-						&& (m.getTitle().toLowerCase().contains(s))) {
+				if ((m.isIgnored() == false) && (m.getTitle().toLowerCase().contains(s))) {
 					result.add(m);
 				}
 			}
@@ -131,8 +129,7 @@ public class Utilities {
 			for (int j = i + 1; j < mShowtimesList.size(); j++) {
 				Showtime si = mShowtimesList.get(i);
 				Showtime sj = mShowtimesList.get(j);
-				if (si.getMovie().getTitle()
-						.compareToIgnoreCase(sj.getMovie().getTitle()) > 0) {
+				if (si.getMovie().getTitle().compareToIgnoreCase(sj.getMovie().getTitle()) > 0) {
 					mShowtimesList.set(i, sj);
 					mShowtimesList.set(j, si);
 				}
@@ -157,23 +154,13 @@ public class Utilities {
 		/* Hardcoded, replace with real thing */
 		if (mCinemasList.isEmpty()) {
 			/* Get cinemas list */
-			mCinemasList
-					.add(new Cinema(
-							"Odeon Cineplex",
-							"Polus Center, Str. Avram Iancu, nr. 492 - 500, comuna Floresti, Cluj-Napoca",
-							true, R.drawable.cinema_odeon, 46749267, 23530730));
-			mCinemasList.add(new Cinema("Cinema City",
-					"Str Alexandru Vaida Voievod, Nr. 53-55 (Iulius Mall)",
-					false, R.drawable.cinema_city, 46771761, 23625906));
-			mCinemasList.add(new Cinema("Florin Piersic",
-					"P-ta Mihai Viteazul nr.11", true,
-					R.drawable.cinema_florin_piersic, 46772217, 23587689));
-			mCinemasList.add(new Cinema("Cinema Victoria",
-					"B-dul Eroilor nr.51", false, R.drawable.cinema_victoria,
-					46770659, 23596112));
-			mCinemasList.add(new Cinema("Arta-Eurimages - Cluj",
-					"Str. Universitatii, nr.3", false, R.drawable.cinema_arta,
-					46768080, 23590165));
+			mCinemasList.add(new Cinema("Odeon Cineplex", "Polus Center, Str. Avram Iancu, nr. 492 - 500, comuna Floresti, Cluj-Napoca", true,
+					R.drawable.cinema_odeon, 46749267, 23530730));
+			mCinemasList.add(new Cinema("Cinema City", "Str Alexandru Vaida Voievod, Nr. 53-55 (Iulius Mall)", false, R.drawable.cinema_city, 46771761,
+					23625906));
+			mCinemasList.add(new Cinema("Florin Piersic", "P-ta Mihai Viteazul nr.11", true, R.drawable.cinema_florin_piersic, 46772217, 23587689));
+			mCinemasList.add(new Cinema("Cinema Victoria", "B-dul Eroilor nr.51", false, R.drawable.cinema_victoria, 46770659, 23596112));
+			mCinemasList.add(new Cinema("Arta-Eurimages - Cluj", "Str. Universitatii, nr.3", false, R.drawable.cinema_arta, 46768080, 23590165));
 			for (Cinema cinema : mCinemasList) {
 				if (cinema.isFavorite()) {
 					mCinemasListFav.add(cinema);
@@ -182,107 +169,51 @@ public class Utilities {
 		}
 		if (mMoviesList.isEmpty()) {
 			/* Get movies list */
-			mMoviesList.add(new Movie(
-					"The Twilight Saga: Breaking Dawn - Part 1 (2011)",
-					R.drawable.movie_twilight));
-			mMoviesList.add(new Movie("Immortals (2011)",
-					R.drawable.movie_imortals));
-			mMoviesList.add(new Movie("In Time (2011)",
-					R.drawable.movie_in_time));
-			mMoviesList
-					.add(new Movie("Cars 2 (2011)", R.drawable.movie_cars_2));
-			mMoviesList.add(new Movie("A Dangerous Method (2011)",
-					R.drawable.movie_dangerous_method));
-			mMoviesList.add(new Movie("Arthur Christmas (2011)",
-					R.drawable.movie_arthur_christmas));
-			mMoviesList.add(new Movie("The Thing (2011)",
-					R.drawable.movie_the_thing));
-			mMoviesList.add(new Movie("Anonymous (2011)",
-					R.drawable.movie_anonymous));
-			mMoviesList.add(new Movie("Margin Call (2011)",
-					R.drawable.movie_margin_call));
-			mMoviesList.add(new Movie("Puss in Boots (2011)",
-					R.drawable.movie_puss_in_boots));
-			mMoviesList
-					.add(new Movie("Amador (2010)", R.drawable.movie_amador));
-			mMoviesList.add(new Movie("Liceenii, în 53 de ore si ceva (2010)",
-					R.drawable.movie_liceenii));
-			mMoviesList
-					.add(new Movie("Admiral (2008)", R.drawable.movie_amiral));
-			mMoviesList.add(new Movie("Kandagar (2010)",
-					R.drawable.movie_kandagar));
+			mMoviesList.add(new Movie("The Twilight Saga: Breaking Dawn - Part 1 (2011)", R.drawable.movie_twilight,
+					"http://www.youtube.com/watch?v=sIpeBi6SG4A"));
+			mMoviesList.add(new Movie("Immortals (2011)", R.drawable.movie_imortals));
+			mMoviesList.add(new Movie("In Time (2011)", R.drawable.movie_in_time));
+			mMoviesList.add(new Movie("Cars 2 (2011)", R.drawable.movie_cars_2));
+			mMoviesList.add(new Movie("A Dangerous Method (2011)", R.drawable.movie_dangerous_method));
+			mMoviesList.add(new Movie("Arthur Christmas (2011)", R.drawable.movie_arthur_christmas));
+			mMoviesList.add(new Movie("The Thing (2011)", R.drawable.movie_the_thing));
+			mMoviesList.add(new Movie("Anonymous (2011)", R.drawable.movie_anonymous));
+			mMoviesList.add(new Movie("Margin Call (2011)", R.drawable.movie_margin_call));
+			mMoviesList.add(new Movie("Puss in Boots (2011)", R.drawable.movie_puss_in_boots));
+			mMoviesList.add(new Movie("Amador (2010)", R.drawable.movie_amador, "http://www.youtube.com/watch?v=1TqWIkr5HSI"));
+			mMoviesList.add(new Movie("Liceenii, în 53 de ore si ceva (2010)", R.drawable.movie_liceenii));
+			mMoviesList.add(new Movie("Admiral (2008)", R.drawable.movie_amiral));
+			mMoviesList.add(new Movie("Kandagar (2010)", R.drawable.movie_kandagar));
 		}
 		if (mShowtimesList.isEmpty()) {
 			/* Get Showtimess list */
 			Random rand = new Random();
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(3), mCinemasList
-					.get(0), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(3), mCinemasList.get(0), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(7), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(8), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList
-					.get(1), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(4), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(5), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(0), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(1), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(7), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(8), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(2), mCinemasList.get(1), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList
-					.get(2), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(12), mCinemasList
-					.get(2), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(13), mCinemasList
-					.get(2), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(9), mCinemasList.get(2), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(12), mCinemasList.get(2), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(13), mCinemasList.get(2), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(6), mCinemasList
-					.get(3), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
-			mShowtimesList.add(new Showtime(mMoviesList.get(10), mCinemasList
-					.get(3), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(6), mCinemasList.get(3), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(10), mCinemasList.get(3), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
 
-			mShowtimesList.add(new Showtime(mMoviesList.get(11), mCinemasList
-					.get(4), rand.nextInt() % 5 + 10,
-					"09.12;10.12;11.12 16:00;17:30;21:15"));
+			mShowtimesList.add(new Showtime(mMoviesList.get(11), mCinemasList.get(4), rand.nextInt() % 5 + 10, "09.12;10.12;11.12 16:00;17:30;21:15"));
 		}
 
 		// sort movies by name

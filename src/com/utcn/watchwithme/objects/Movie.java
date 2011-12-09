@@ -12,6 +12,8 @@ public class Movie implements Serializable {
 	private int length; // in minutes
 	private int icon = -1;
 	private boolean ignored = false;
+	private float rating;
+	private int ratingCounts;
 
 	public Movie() {
 
@@ -24,6 +26,16 @@ public class Movie implements Serializable {
 		this.trailerURL = "";
 		this.length = 100;
 		this.id = 0;
+	}
+
+	public Movie(String title, int icon, String url) {
+		this.title = title;
+		this.icon = icon;
+		this.details = "";
+		this.trailerURL = "";
+		this.length = 100;
+		this.id = 0;
+		this.trailerURL = url;
 	}
 
 	@Override
@@ -81,5 +93,23 @@ public class Movie implements Serializable {
 
 	public void setTrailerURL(String trailerURL) {
 		this.trailerURL = trailerURL;
+	}
+
+	public float getRating() {
+		return this.rating;
+	}
+
+	public void setRating(float newRating, int ratingCount) {
+		this.rating = newRating;
+		this.ratingCounts = ratingCount;
+	}
+
+	public void giveRating(float ratingGiven) {
+		rating = (rating * ratingCounts + ratingGiven) / (ratingCounts + 1);
+		ratingCounts++;
+	}
+
+	public int getRatingCount() {
+		return this.ratingCounts;
 	}
 }
