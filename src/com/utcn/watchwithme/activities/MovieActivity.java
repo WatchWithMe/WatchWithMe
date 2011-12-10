@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Movie;
-import com.utcn.watchwithme.repository.Utilities;
+import com.utcn.watchwithme.services.MovieService;
 
 public class MovieActivity extends Activity implements OnClickListener {
 
@@ -23,7 +23,7 @@ public class MovieActivity extends Activity implements OnClickListener {
 	private ImageView mYoutubeIcon;
 	private Button mRateButton;
 	private TextView mRatingText;
-	private Movie movie = Utilities.getSelectedMovie();
+	private Movie movie = MovieService.getSelected();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,8 @@ public class MovieActivity extends Activity implements OnClickListener {
 	}
 
 	private void updateRatingText() {
-		mRatingText.setText("Rating: " + movie.getRating() + ", Total: " + movie.getRatingCount());
+		mRatingText.setText("Rating: " + movie.getRating() + ", Total: "
+				+ movie.getRatingCount());
 		mRatingBar.setRating(movie.getRating());
 	}
 

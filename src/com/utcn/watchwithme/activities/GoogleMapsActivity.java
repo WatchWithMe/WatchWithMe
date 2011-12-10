@@ -30,7 +30,7 @@ import com.google.android.maps.OverlayItem;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.internet.NetworkUtilities;
 import com.utcn.watchwithme.objects.Cinema;
-import com.utcn.watchwithme.repository.Utilities;
+import com.utcn.watchwithme.services.CinemaService;
 
 public class GoogleMapsActivity extends MapActivity {
 
@@ -40,7 +40,7 @@ public class GoogleMapsActivity extends MapActivity {
 	private MapController mc;
 	private MapItemizedOverlay overlay, userOverlay;
 	private List<Overlay> mapOverlays;
-	private Cinema cinema = Utilities.getSelectedCinema();
+	private Cinema cinema = CinemaService.getSelected();
 	private GeoPoint myLocation;
 
 	private static final int ZOOM_LEVEL = 16;

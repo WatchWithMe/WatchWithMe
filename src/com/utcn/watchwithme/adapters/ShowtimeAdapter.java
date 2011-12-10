@@ -27,18 +27,27 @@ public class ShowtimeAdapter extends BaseAdapter {
 		this.res = context.getResources();
 	}
 
+	public void setItems(ArrayList<Showtime> items) {
+		this.items = items;
+		notifyDataSetChanged();
+	}
+
+	@Override
 	public int getCount() {
 		return items.size();
 	}
 
+	@Override
 	public Object getItem(int position) {
 		return items.get(position);
 	}
 
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 

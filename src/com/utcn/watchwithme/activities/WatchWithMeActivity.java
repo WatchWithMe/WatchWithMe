@@ -8,7 +8,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.utcn.watchwithme.R;
-import com.utcn.watchwithme.repository.Utilities;
 
 public class WatchWithMeActivity extends Activity implements OnClickListener {
 	/** Called when the activity is first created. */
@@ -22,7 +21,6 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		setUpViews();
-		Utilities.loadApplicationData();
 	}
 
 	private void setUpViews() {

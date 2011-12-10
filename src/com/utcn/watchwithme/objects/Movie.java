@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Movie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	public static int nextID = 0;
 	private int id;
 	private String title;
 	private String details;
@@ -16,31 +17,45 @@ public class Movie implements Serializable {
 	private int ratingCounts;
 
 	public Movie() {
-
+		this.id = nextID++;
 	}
 
 	public Movie(String title, int icon) {
+		this.id = nextID++;
 		this.title = title;
 		this.icon = icon;
 		this.details = "";
 		this.trailerURL = "";
 		this.length = 100;
-		this.id = 0;
 	}
 
 	public Movie(String title, int icon, String url) {
+		this.id = nextID++;
 		this.title = title;
 		this.icon = icon;
 		this.details = "";
 		this.trailerURL = "";
 		this.length = 100;
-		this.id = 0;
 		this.trailerURL = url;
 	}
 
 	@Override
 	public String toString() {
 		return title;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Movie) {
+			Movie x = (Movie) o;
+			return this.id == x.id;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return (new Integer(id)).hashCode();
 	}
 
 	public int getIcon() {

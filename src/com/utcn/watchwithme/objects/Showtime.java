@@ -38,6 +38,20 @@ public class Showtime {
 		}
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Showtime) {
+			Showtime x = (Showtime) o;
+			return this.movie.equals(x.movie) && this.cinema.equals(x.cinema);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return movie.hashCode() * 37 + cinema.hashCode();
+	}
+
 	public String[] getShowtimes() {
 		return dates;
 	}

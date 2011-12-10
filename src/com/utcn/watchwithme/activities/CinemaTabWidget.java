@@ -9,6 +9,7 @@ import android.widget.TabHost;
 import com.utcn.watchwithme.R;
 
 public class CinemaTabWidget extends TabActivity {
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cinema_tab_layout);

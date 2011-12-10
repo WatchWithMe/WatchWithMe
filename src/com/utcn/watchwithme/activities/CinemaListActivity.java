@@ -9,18 +9,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.utcn.watchwithme.adapters.CinemaAdapter;
 import com.utcn.watchwithme.objects.Cinema;
-import com.utcn.watchwithme.repository.Utilities;
+import com.utcn.watchwithme.services.CinemaService;
 
 public class CinemaListActivity extends ListActivity {
 
 	private final String DEBUG_TAG = "CinemaListActivity";
 
-	private ArrayList<Cinema> items = Utilities.getAllCinemas();
+	private ArrayList<Cinema> items = CinemaService.getAllCinemas();
+	private ListView lv;
 	private CinemaAdapter adapter;
 
 	@Override
@@ -30,7 +32,7 @@ public class CinemaListActivity extends ListActivity {
 		adapter = new CinemaAdapter(this, items);
 		setListAdapter(adapter);
 
-		ListView lv = getListView();
+		lv = getListView();
 		Log.i(DEBUG_TAG, "ListView = " + lv);
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -45,31 +47,30 @@ public class CinemaListActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		adapter = new CinemaAdapter(this, items);
-		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 
 	private void goToCinemaActivity(int position) {
-		Utilities.setSelectedCinema(items.get(position));
+		CinemaService.setSelected(items.get(position));
 
 		Intent intent = new Intent(this, CinemaActivity.class);
 		startActivity(intent);
 	}
 
 	public void clickedFavorites(View v) {
-		RelativeLayout parent = (RelativeLayout) v.getParent();
+		FrameLayout parent = (FrameLayout) ((RelativeLayout) v.getParent())
+				.getParent();
 
-		ListView lvItems = getListView();
-		for (int i = 0; i < lvItems.getChildCount(); i++) {
-			RelativeLayout rl = (RelativeLayout) lvItems.getChildAt(i);
+		Log.i(DEBUG_TAG, "ListView = " + lv);
+		for (int i = 0; i < lv.getChildCount(); i++) {
+			FrameLayout rl = (FrameLayout) lv.getChildAt(i);
 			if (rl == parent) {
-				Utilities.changeCinemaFavoriteStatus(i, 1);
+				CinemaService.changeCinemaFavoriteStatus(items.get(i).getId());
 				Log.i(DEBUG_TAG, "Changed cinema " + i + " favorite status");
 			}
 		}
 
-		items = Utilities.getAllCinemas();
-		adapter = new CinemaAdapter(this, items);
-		setListAdapter(adapter);
+		items = CinemaService.getAllCinemas();
+		adapter.setItems(items);
 	}
 }

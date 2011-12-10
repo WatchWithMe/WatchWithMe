@@ -22,18 +22,27 @@ public class MoviesAdapter extends BaseAdapter {
 		mContext = context;
 	}
 
+	public void setItems(ArrayList<Movie> movies) {
+		this.mMovies = movies;
+		notifyDataSetChanged();
+	}
+
+	@Override
 	public int getCount() {
 		return mMovies.size();
 	}
 
+	@Override
 	public Movie getItem(int position) {
 		return mMovies.get(position);
 	}
 
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		Movie movie = getItem(position);

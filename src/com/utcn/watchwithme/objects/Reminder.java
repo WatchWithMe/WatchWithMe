@@ -22,6 +22,21 @@ public class Reminder {
 		return movie.getTitle() + ", " + cinema.getName() + ": " + date;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Reminder) {
+			Reminder x = (Reminder) o;
+			return this.movie.equals(x.movie) && this.cinema.equals(x.cinema)
+					&& this.date.equals(x.date);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return movie.hashCode() * 37 + cinema.hashCode() * 51 + date.hashCode();
+	}
+
 	public Movie getMovie() {
 		return movie;
 	}

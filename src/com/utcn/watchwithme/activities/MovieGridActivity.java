@@ -24,7 +24,7 @@ import android.widget.GridView;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.MoviesAdapter;
 import com.utcn.watchwithme.objects.Movie;
-import com.utcn.watchwithme.repository.Utilities;
+import com.utcn.watchwithme.services.MovieService;
 
 public class MovieGridActivity extends Activity {
 
@@ -34,7 +34,7 @@ public class MovieGridActivity extends Activity {
 	private MoviesAdapter mAdapter;
 	private GridView mGridView;
 	private EditText edittext;
-	private ArrayList<Movie> movies = Utilities.getAllMovies();
+	private ArrayList<Movie> movies = MovieService.getAllMovies();
 	private Movie pressedMovie;
 
 	@Override
@@ -53,12 +53,13 @@ public class MovieGridActivity extends Activity {
 		});
 
 		edittext.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
-					movies = Utilities.searchForMovie(edittext.getText()
+					movies = MovieService.searchForMovie(edittext.getText()
 							.toString());
-					setUpAdapter();
+					mAdapter.setItems(movies);
 					return true;
 				}
 				return false;
@@ -79,7 +80,7 @@ public class MovieGridActivity extends Activity {
 	}
 
 	private void goToMovieActivity(int position) {
-		Utilities.setSelectedMovie(movies.get(position));
+		MovieService.setSelected(movies.get(position));
 
 		Intent intent = new Intent(this, MovieActivity.class);
 		startActivity(intent);
@@ -96,9 +97,9 @@ public class MovieGridActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.unignore1_menu_option:
-			Utilities.unignoreMovies();
-			movies = Utilities.searchForMovie(edittext.getText().toString());
-			setUpAdapter();
+			MovieService.unignoreMovies();
+			movies = MovieService.searchForMovie(edittext.getText().toString());
+			mAdapter.setItems(movies);
 			break;
 		}
 		return true;
@@ -135,14 +136,16 @@ public class MovieGridActivity extends Activity {
 				.setCancelable(false)
 				.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								Utilities.ignoreMovie(pressedMovie);
+								MovieService.ignoreMovie(pressedMovie.getId());
 								movies.remove(pressedMovie);
-								setUpAdapter();
+								mAdapter.setItems(movies);
 								Log.i(DEBUG_TAG, "Clicked on Yes Button");
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						Log.i(DEBUG_TAG, "Clicked on No Button");
 						dialog.cancel();

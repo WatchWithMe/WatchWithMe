@@ -25,7 +25,10 @@ import com.utcn.watchwithme.adapters.ShowtimeAdapter;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.objects.Reminder;
 import com.utcn.watchwithme.objects.Showtime;
-import com.utcn.watchwithme.repository.Utilities;
+import com.utcn.watchwithme.services.AgendaService;
+import com.utcn.watchwithme.services.CinemaService;
+import com.utcn.watchwithme.services.MovieService;
+import com.utcn.watchwithme.services.ShowtimeService;
 
 public class CinemaActivity extends Activity {
 
@@ -35,9 +38,10 @@ public class CinemaActivity extends Activity {
 	private final int IGNORE = 3;
 	private int menuSelection;
 
-	private Cinema cinema = Utilities.getSelectedCinema();
-	private ArrayList<Showtime> showtimes = Utilities
-			.getShowtimesForCinema(cinema);
+	private Cinema cinema = CinemaService.getSelected();
+	private ArrayList<Showtime> showtimes = ShowtimeService.getForCinema(cinema
+			.getId());
+	private ShowtimeAdapter adapter;
 	private Showtime pressedShowtime;
 	private ListView listview;
 
@@ -53,7 +57,8 @@ public class CinemaActivity extends Activity {
 		tv.setText(cinema.getLocation());
 
 		listview = (ListView) findViewById(R.id.showtime_list_view);
-		refreshContent();
+		adapter = new ShowtimeAdapter(this, showtimes);
+		listview.setAdapter(adapter);
 
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -67,8 +72,8 @@ public class CinemaActivity extends Activity {
 	}
 
 	private void refreshContent() {
-		showtimes = Utilities.getShowtimesForCinema(cinema);
-		listview.setAdapter(new ShowtimeAdapter(this, showtimes));
+		showtimes = ShowtimeService.getForCinema(cinema.getId());
+		adapter.setItems(showtimes);
 	}
 
 	@Override
@@ -82,15 +87,15 @@ public class CinemaActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.unignore_menu_option:
-			Utilities.unignoreMovies();
+			MovieService.unignoreMovies();
 			refreshContent();
 			break;
 		case R.id.name_sort_menu_option:
-			Utilities.sortShowtimesByMovieTitle();
+			ShowtimeService.sortByTitle();
 			refreshContent();
 			break;
 		case R.id.price_sort_menu_option:
-			Utilities.sortShowtimesByMoviePrice();
+			ShowtimeService.sortByPrice();
 			refreshContent();
 			break;
 		}
@@ -140,10 +145,10 @@ public class CinemaActivity extends Activity {
 				Log.e(DEBUG_TAG, "Implement the invitation");
 				break;
 			case REMIND:
-				Reminder r = new Reminder(pressedShowtime,
+				Reminder reminder = new Reminder(pressedShowtime,
 						(String) item.getTitle());
-				Utilities.addReminder(r);
-				Log.i(DEBUG_TAG, r.toString());
+				AgendaService.add(reminder);
+				Log.i(DEBUG_TAG, reminder.toString());
 				break;
 			}
 		}
@@ -156,14 +161,17 @@ public class CinemaActivity extends Activity {
 				.setCancelable(false)
 				.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								Utilities.ignoreMovie(pressedShowtime
-										.getMovie());
-								refreshContent();
+								MovieService.ignoreMovie(pressedShowtime
+										.getMovie().getId());
+								showtimes.remove(pressedShowtime);
+								adapter.notifyDataSetChanged();
 								Log.i(DEBUG_TAG, "Clicked on Yes Button");
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						Log.i(DEBUG_TAG, "Clicked on No Button");
 						dialog.cancel();
@@ -177,7 +185,7 @@ public class CinemaActivity extends Activity {
 	}
 
 	private void goToMovieActivity(int position) {
-		Utilities.setSelectedMovie(showtimes.get(position).getMovie());
+		MovieService.setSelected(showtimes.get(position).getMovie());
 
 		Intent intent = new Intent(this, MovieActivity.class);
 		startActivity(intent);

@@ -7,18 +7,20 @@ import com.google.android.maps.GeoPoint;
 public class Cinema implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static int nextID = 0;
 	private int id;
 	private String name;
 	private String location;
 	private GeoPoint geoPoint;
 	private boolean favorite;
-
 	private int icon = -1;
 
 	public Cinema() {
+		this.id = nextID++;
 	}
 
 	public Cinema(String name, String location, boolean favorite) {
+		this.id = nextID++;
 		this.name = name;
 		this.location = location;
 		this.favorite = favorite;
@@ -27,6 +29,7 @@ public class Cinema implements Serializable {
 
 	public Cinema(String name, String location, boolean favorite, int icon,
 			int lat, int lng) {
+		this.id = nextID++;
 		this.name = name;
 		this.location = location;
 		this.favorite = favorite;
@@ -47,14 +50,14 @@ public class Cinema implements Serializable {
 	public boolean equals(Object o) {
 		if (o instanceof Cinema) {
 			Cinema x = (Cinema) o;
-			return this.name.equals(x.name) && this.location.equals(x.location);
+			return this.id == x.id;
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return (37 + name.hashCode()) * 51 + location.hashCode();
+		return (new Integer(id)).hashCode();
 	}
 
 	public int getId() {
