@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
 
-    <ImageView
-        android:id="@+id/showtime_image"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/icon" />
-
-    <TextView
-        android:id="@+id/showtime_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/showtime_image"
-        android:textSize="16sp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/showtime_hours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/showtime_title"
-        android:layout_toRightOf="@+id/showtime_image"
-        android:textSize="12sp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/showtime_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:textSize="16sp"
-        android:text="Price"/>
-
-</RelativeLayout>
+<FrameLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent">
+	
+	<ImageView 
+		android:layout_width="fill_parent"
+		android:layout_height="80dp"
+		android:src="@drawable/list_item_back"
+		android:scaleType="fitXY" />
+	
+	<RelativeLayout 
+	    android:id="@+id/relativeLayout1"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" >
+	
+	    <ImageView
+	        android:id="@+id/showtime_image"
+	        android:layout_width="wrap_content"
+	        android:layout_height="80dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:src="@drawable/icon" />
+	
+	    <TextView
+	        android:id="@+id/showtime_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_toRightOf="@id/showtime_image"
+	        android:layout_marginTop="3dp"
+	        android:textSize="16sp"
+	        android:textStyle="bold"
+	        android:text="TextView"
+	        android:textColor="#000000" />
+	
+	    <TextView
+	        android:id="@+id/showtime_hours"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/showtime_title"
+	        android:layout_toRightOf="@+id/showtime_image"
+	        android:layout_marginTop="5dp"
+	        android:textSize="12sp"
+	        android:text="TextView"
+	        android:textColor="#000000" />
+	
+	    <TextView
+	        android:id="@+id/showtime_price"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentBottom="true"
+	        android:textSize="16sp"
+	        android:text="Price"
+	        android:textColor="#000000" />
+	
+	</RelativeLayout>
+</FrameLayout>

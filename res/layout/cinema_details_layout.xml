@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    android:layout_width="fill_parent"
+<RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent" 
-	android:orientation="vertical">
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+	android:orientation="vertical"
+	android:background="@drawable/wallpaper">
 
+	<TextView 
+        android:id="@+id/cinema_full_name"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+		android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:text="Cinema name" >
+    </TextView>   
+    
     <RelativeLayout
+    	android:id="@+id/rellaycinema"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/cinema_full_name">
         
         <TextView
-        	android:id="@+id/cinema_full_name"
+        	android:id="@+id/cinema_full_location"
         	android:layout_height="wrap_content"
-        	android:layout_width="fill_parent"
+        	android:layout_width="280dp"
         	android:layout_alignParentLeft="true"
         	android:layout_alignParentTop="true"
-        	android:textSize="25sp"
-        	android:textStyle="bold"
-        	android:text="Cinema name">
+        	android:textSize="16sp"
+        	android:textStyle="italic"
+        	android:text="location" >
     	</TextView>
         
         <ImageView
             android:id="@+id/map_button"
             android:src="@drawable/cinema_map_button"
-        	android:layout_width="40dp"   
-        	android:layout_height="40dp" 
+        	android:layout_width="60dp"   
+        	android:layout_height="60dp" 
         	android:layout_alignParentRight="true"
         	android:layout_alignParentTop="true"
         	android:onClick="goToMap">
         </ImageView>
-    </RelativeLayout>
-    
-    <TextView 
-        android:id="@+id/cinema_full_location"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_marginBottom="5dp"
-        android:textSize="16sp"
-        android:textStyle="italic"
-        android:text="location">
-    </TextView>
-    
+    </RelativeLayout>     
     
     <ListView
         android:id="@+id/showtime_list_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:cacheColorHint="#00000000"
+        android:layout_below="@id/rellaycinema">
     </ListView>
  	
-</LinearLayout>
+</RelativeLayout>
 

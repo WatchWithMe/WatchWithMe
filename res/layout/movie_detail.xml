@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content" >
+	android:layout_height="wrap_content"
+	android:background="@drawable/wallpaper" >
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -16,7 +17,8 @@
 			android:layout_margin="20dp"
 			android:gravity="center_horizontal"
 			android:text="demo title"
-			android:textSize="26sp" />
+			android:textSize="26sp"
+			android:textStyle="bold" />
 
 		<ImageView
 			android:id="@+id/movie_detail_icon"
@@ -43,7 +45,8 @@
 			android:layout_marginTop="5dp"
 			android:gravity="center_horizontal"
 			android:text="Watch trailer on youtube"
-			android:textSize="16sp" />
+			android:textSize="16sp"
+	        android:textColor="#000000" />
 
 		<TextView
 			android:id="@+id/rate_text"
@@ -54,7 +57,8 @@
 			android:layout_marginTop="30dp"
 			android:gravity="center_horizontal"
 			android:text="Rate this movie!"
-			android:textSize="16sp" />
+			android:textSize="16sp"
+	        android:textColor="#000000" />
 
 		<RatingBar
 			android:id="@+id/movie_detail_rating"
@@ -72,7 +76,8 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/movie_detail_rating"
 			android:layout_margin="10dp"
-			android:text="Rate it!" />
+			android:text="Rate it!"
+	        android:textColor="#000000" />
 
 		<TextView
 			android:id="@+id/movie_detail_rating_text"

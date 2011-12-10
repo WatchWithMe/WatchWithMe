@@ -38,10 +38,13 @@ public class MoviesAdapter extends BaseAdapter {
 		ViewHolder holder;
 		Movie movie = getItem(position);
 		if ((convertView == null) || (convertView.getTag() == null)) {
-			convertView = View.inflate(mContext, R.layout.movie_list_item, null);
+			convertView = View
+					.inflate(mContext, R.layout.movie_list_item, null);
 			holder = new ViewHolder();
-			holder.icon = (ImageView) convertView.findViewById(R.id.movie_item_icon);
-			holder.name = (TextView) convertView.findViewById(R.id.movie_item_title);
+			holder.icon = (ImageView) convertView
+					.findViewById(R.id.movie_item_icon);
+			holder.name = (TextView) convertView
+					.findViewById(R.id.movie_item_title);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
