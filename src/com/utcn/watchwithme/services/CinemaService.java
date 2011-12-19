@@ -19,9 +19,8 @@ public class CinemaService {
 	private static boolean flag;
 
 	public static void eraseData() {
-		cinemaList = new ArrayList<Cinema>();
-		cinemaFavList = new ArrayList<Cinema>();
-		selected = null;
+		cinemaList.clear();
+		cinemaFavList.clear();
 	}
 
 	public static boolean updated() {
@@ -43,7 +42,7 @@ public class CinemaService {
 	}
 
 	public static ArrayList<Cinema> getAllCinemas() {
-		if (cinemaList.size() == 0) {
+		if (cinemaList.size() == 0 || flag == false) {
 			cinemaList = RemoteCinemaRepository.getAllCinemas();
 			if (cinemaList == null) {
 				cinemaList = StaticCinemaRepository.getAllCinemas();

@@ -108,6 +108,12 @@ public class MovieGridActivity extends Activity {
 			movies = MovieService.searchForMovie(edittext.getText().toString());
 			mAdapter.setItems(movies);
 			break;
+		case R.id.movies_sync_menu_option:
+			MovieService.eraseData();
+			movies.clear();
+			mAdapter.notifyDataSetChanged();
+			new LoadTask(this).execute();
+			break;
 		}
 		return true;
 	}

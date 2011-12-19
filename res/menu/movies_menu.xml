@@ -1,4 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/movies_sync_menu_option"
+        android:title="Sync" />  
     <item android:id="@+id/unignore1_menu_option"
-        android:title="Unignore all movies" />     
+        android:title="Unignore movies" />     
 </menu>

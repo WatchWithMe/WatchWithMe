@@ -12,6 +12,9 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.CinemaAdapter;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.repository.RemoteImageRepository;
@@ -62,6 +66,26 @@ public class CinemaListActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.cinemas_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.cinemas_sync_menu_option:
+			CinemaService.eraseData();
+			items.clear();
+			adapter.notifyDataSetChanged();
+			new LoadTask(this).execute();
+			break;
+		}
+		return true;
 	}
 
 	private void goToCinemaActivity(int position) {

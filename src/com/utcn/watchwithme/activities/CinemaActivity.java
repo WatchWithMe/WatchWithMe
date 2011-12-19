@@ -100,6 +100,12 @@ public class CinemaActivity extends Activity {
 			MovieService.unignoreMovies();
 			refreshContent();
 			break;
+		case R.id.cinema_sync_menu_option:
+			ShowtimeService.eraseData();
+			showtimes.clear();
+			adapter.notifyDataSetChanged();
+			new LoadTask(this).execute();
+			break;
 		case R.id.name_sort_menu_option:
 			ShowtimeService.sortByTitle();
 			refreshContent();

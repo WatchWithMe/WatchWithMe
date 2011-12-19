@@ -1,6 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/cinema_sync_menu_option"
+        android:title="Sync" />  
     <item android:id="@+id/unignore_menu_option"
-        android:title="Unignore all movies" />    
+        android:title="Unignore movies" />  
     <item android:id="@+id/name_sort_menu_option"
         android:title="Sort by name" />
     <item android:id="@+id/price_sort_menu_option"

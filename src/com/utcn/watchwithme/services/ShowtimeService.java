@@ -21,7 +21,7 @@ public class ShowtimeService {
 	private static boolean flag;
 
 	public static void eraseData() {
-		showtimeList = new ArrayList<Showtime>();
+		showtimeList.clear();
 		obtainedCinemas.clear();
 		obtainedMovies.clear();
 	}
@@ -33,13 +33,12 @@ public class ShowtimeService {
 	public static ArrayList<Showtime> getForCinema(int id) {
 		MovieService.getAllMovies();
 		ArrayList<Showtime> list = new ArrayList<Showtime>();
-		if (obtainedCinemas.contains(id)) {
+		if (obtainedCinemas.contains(id) && flag == true) {
 			for (Showtime st : showtimeList) {
 				if (st.getCinema().getId() == id) {
 					list.add(st);
 				}
 			}
-			flag = false;
 			return list;
 		}
 		list = RemoteShowtimeRepository.getForCinema(id);
@@ -52,6 +51,9 @@ public class ShowtimeService {
 		if (list.size() > 0) {
 			for (Showtime st : list) {
 				if (!showtimeList.contains(st)) {
+					showtimeList.add(st);
+				} else {
+					showtimeList.remove(st);
 					showtimeList.add(st);
 				}
 			}
@@ -71,13 +73,12 @@ public class ShowtimeService {
 	public static ArrayList<Showtime> getForMovie(int id) {
 		CinemaService.getAllCinemas();
 		ArrayList<Showtime> list = new ArrayList<Showtime>();
-		if (obtainedMovies.contains(id)) {
+		if (obtainedMovies.contains(id) && flag == true) {
 			for (Showtime st : showtimeList) {
 				if (st.getMovie().getId() == id) {
 					list.add(st);
 				}
 			}
-			flag = false;
 			return list;
 		}
 		list = RemoteShowtimeRepository.getForMovie(id);
@@ -90,6 +91,9 @@ public class ShowtimeService {
 		if (list.size() > 0) {
 			for (Showtime st : list) {
 				if (!showtimeList.contains(st)) {
+					showtimeList.add(st);
+				} else {
+					showtimeList.remove(st);
 					showtimeList.add(st);
 				}
 			}

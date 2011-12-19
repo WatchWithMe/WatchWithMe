@@ -18,8 +18,7 @@ public class MovieService {
 	private static boolean flag;
 
 	public static void eraseData() {
-		movieList = new ArrayList<Movie>();
-		selected = null;
+		movieList.clear();
 	}
 
 	public static boolean updated() {
@@ -40,7 +39,7 @@ public class MovieService {
 	}
 
 	public static ArrayList<Movie> getAllMovies() {
-		if (movieList.size() == 0) {
+		if (movieList.size() == 0 || flag == false) {
 			movieList = RemoteMovieRepository.getAllMovies();
 			if (movieList == null) {
 				movieList = StaticMovieRepository.getAllMovies();
