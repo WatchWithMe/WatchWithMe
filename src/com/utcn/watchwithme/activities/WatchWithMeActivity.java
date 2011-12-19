@@ -3,11 +3,17 @@ package com.utcn.watchwithme.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.utcn.watchwithme.R;
+import com.utcn.watchwithme.services.CinemaService;
+import com.utcn.watchwithme.services.MovieService;
+import com.utcn.watchwithme.services.ShowtimeService;
 
 public class WatchWithMeActivity extends Activity implements OnClickListener {
 	/** Called when the activity is first created. */
@@ -16,9 +22,16 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 	private Button mButtonNotifications;
 	private Button mButtonReminders;
 
+	private static Activity instance;
+
+	public static Activity getInstance() {
+		return instance;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		instance = this;
 		setContentView(R.layout.main);
 		setUpViews();
 	}
@@ -82,4 +95,22 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.erase_menu_option:
+			CinemaService.eraseData();
+			MovieService.eraseData();
+			ShowtimeService.eraseData();
+			break;
+		}
+		return true;
+	}
 }

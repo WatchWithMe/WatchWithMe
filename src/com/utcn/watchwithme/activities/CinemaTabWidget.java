@@ -8,6 +8,11 @@ import android.widget.TabHost;
 
 import com.utcn.watchwithme.R;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class CinemaTabWidget extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,6 @@ public class CinemaTabWidget extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		tabHost.setCurrentTab(1);
+		tabHost.setCurrentTab(0);
 	}
 }

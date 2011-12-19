@@ -1,0 +1,4 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/erase_menu_option"
+        android:title="Erase data" /> 
+</menu>

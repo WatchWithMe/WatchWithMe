@@ -1,9 +1,14 @@
-package com.utcn.watchwithme.database;
+package com.utcn.watchwithme.repository;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class MovieDatabaseHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "watchwithme";

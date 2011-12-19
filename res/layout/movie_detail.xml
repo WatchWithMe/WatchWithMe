@@ -89,6 +89,17 @@
 			android:layout_toRightOf="@id/movie_detail_rate_button"
 			android:gravity="center"
 			android:text="rate = demo rate" />
+		
+		<TextView
+			android:id="@+id/movie_details_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/movie_detail_rate_button"
+			android:layout_marginTop="5dp"
+			android:text="Details go here..."
+			android:textSize="16sp"
+	        android:textColor="#FFA500" />
 	</RelativeLayout>
 
 </ScrollView>

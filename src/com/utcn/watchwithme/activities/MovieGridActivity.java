@@ -1,11 +1,15 @@
 package com.utcn.watchwithme.activities;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -24,6 +28,7 @@ import android.widget.GridView;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.MoviesAdapter;
 import com.utcn.watchwithme.objects.Movie;
+import com.utcn.watchwithme.repository.RemoteImageRepository;
 import com.utcn.watchwithme.services.MovieService;
 
 public class MovieGridActivity extends Activity {
@@ -34,7 +39,7 @@ public class MovieGridActivity extends Activity {
 	private MoviesAdapter mAdapter;
 	private GridView mGridView;
 	private EditText edittext;
-	private ArrayList<Movie> movies = MovieService.getAllMovies();
+	private ArrayList<Movie> movies = new ArrayList<Movie>();
 	private Movie pressedMovie;
 
 	@Override
@@ -67,6 +72,8 @@ public class MovieGridActivity extends Activity {
 		});
 
 		registerForContextMenu(mGridView);
+
+		new LoadTask(this).execute();
 	}
 
 	private void setUpViews() {
@@ -156,5 +163,84 @@ public class MovieGridActivity extends Activity {
 		// Icon for AlertDialog
 		alert.setIcon(R.drawable.icon);
 		alert.show();
+	}
+
+	private void changeContent(ArrayList<Movie> movies) {
+		this.movies = movies;
+		mAdapter.setItems(movies);
+	}
+
+	private void notifyAdapter() {
+		mAdapter.notifyDataSetChanged();
+	}
+
+	private void showAlert(String message) {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setMessage(message);
+		ad.setButton("OK",
+				new android.content.DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		ad.show();
+	}
+
+	private static class LoadTask extends
+			AsyncTask<Void, Void, ArrayList<Movie>> {
+
+		private WeakReference<MovieGridActivity> weakActivity;
+
+		public LoadTask(MovieGridActivity activity) {
+			this.weakActivity = new WeakReference<MovieGridActivity>(activity);
+		}
+
+		@Override
+		protected ArrayList<Movie> doInBackground(Void... params) {
+			ArrayList<Movie> mList = MovieService.getAllMovies();
+			return mList;
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<Movie> movies) {
+			if (movies != null) {
+				weakActivity.get().changeContent(movies);
+				if (!MovieService.updated()) {
+					weakActivity.get().showAlert(
+							"Connection to the server failed.\n"
+									+ "Data might be outdated.");
+				}
+				for (Movie m : movies) {
+					new ImageTask(weakActivity.get()).execute(m.getImageURL());
+				}
+			}
+		}
+	}
+
+	private static class ImageTask extends AsyncTask<String, Exception, Bitmap> {
+
+		private WeakReference<MovieGridActivity> weakActivity;
+
+		public ImageTask(MovieGridActivity activity) {
+			this.weakActivity = new WeakReference<MovieGridActivity>(activity);
+		}
+
+		@Override
+		protected Bitmap doInBackground(String... urls) {
+			try {
+				return RemoteImageRepository.getBitmap(urls[0]);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap bmp) {
+			if (bmp != null) {
+				weakActivity.get().notifyAdapter();
+			}
+		}
 	}
 }

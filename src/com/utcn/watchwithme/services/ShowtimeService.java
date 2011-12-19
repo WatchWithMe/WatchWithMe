@@ -1,35 +1,101 @@
 package com.utcn.watchwithme.services;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import com.utcn.watchwithme.objects.Showtime;
+import com.utcn.watchwithme.repository.RemoteShowtimeRepository;
+import com.utcn.watchwithme.repository.StaticShowtimeRepository;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class ShowtimeService {
 
 	private static ArrayList<Showtime> showtimeList = new ArrayList<Showtime>();
+	private static HashSet<Integer> obtainedCinemas = new HashSet<Integer>();
+	private static HashSet<Integer> obtainedMovies = new HashSet<Integer>();
+	private static boolean flag;
+
+	public static void eraseData() {
+		showtimeList = new ArrayList<Showtime>();
+		obtainedCinemas.clear();
+		obtainedMovies.clear();
+	}
+
+	public static boolean updated() {
+		return flag;
+	}
 
 	public static ArrayList<Showtime> getForCinema(int id) {
-		// load data if showtimes not available
+		MovieService.getAllMovies();
 		ArrayList<Showtime> list = new ArrayList<Showtime>();
-		for (Showtime st : showtimeList) {
-			if (st.getCinema().getId() == id
-					&& st.getMovie().isIgnored() == false) {
-				list.add(st);
+		if (obtainedCinemas.contains(id)) {
+			for (Showtime st : showtimeList) {
+				if (st.getCinema().getId() == id) {
+					list.add(st);
+				}
+			}
+			flag = false;
+			return list;
+		}
+		list = RemoteShowtimeRepository.getForCinema(id);
+		if (list == null) {
+			list = StaticShowtimeRepository.getForCinema(id);
+			flag = false;
+		} else {
+			flag = true;
+		}
+		if (list.size() > 0) {
+			for (Showtime st : list) {
+				if (!showtimeList.contains(st)) {
+					showtimeList.add(st);
+				}
+			}
+			obtainedCinemas.add(id);
+		}
+
+		Iterator<Showtime> it = list.iterator();
+		while (it.hasNext()) {
+			Showtime st = it.next();
+			if (st.getMovie().isIgnored()) {
+				it.remove();
 			}
 		}
 		return list;
 	}
 
 	public static ArrayList<Showtime> getForMovie(int id) {
-		// load data if showtimes not available
+		CinemaService.getAllCinemas();
 		ArrayList<Showtime> list = new ArrayList<Showtime>();
-		for (Showtime st : showtimeList) {
-			if (st.getMovie().getId() == id
-					&& st.getMovie().isIgnored() == false) {
-				list.add(st);
+		if (obtainedMovies.contains(id)) {
+			for (Showtime st : showtimeList) {
+				if (st.getMovie().getId() == id) {
+					list.add(st);
+				}
 			}
+			flag = false;
+			return list;
 		}
+		list = RemoteShowtimeRepository.getForMovie(id);
+		if (list == null) {
+			list = StaticShowtimeRepository.getForMovie(id);
+			flag = false;
+		} else {
+			flag = true;
+		}
+		if (list.size() > 0) {
+			for (Showtime st : list) {
+				if (!showtimeList.contains(st)) {
+					showtimeList.add(st);
+				}
+			}
+			obtainedMovies.add(id);
+		}
+
 		return list;
 	}
 
@@ -58,79 +124,5 @@ public class ShowtimeService {
 				}
 			}
 		}
-	}
-
-	static {
-		Random rand = new Random();
-
-		showtimeList.add(new Showtime(MovieService.getMovie(9),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(4),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(5),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(0),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(1),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(2),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(3),
-				CinemaService.getCinema(0), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-
-		showtimeList.add(new Showtime(MovieService.getMovie(9),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(4),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(5),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(0),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(1),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(7),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(8),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(2),
-				CinemaService.getCinema(1), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-
-		showtimeList.add(new Showtime(MovieService.getMovie(9),
-				CinemaService.getCinema(2), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(12),
-				CinemaService.getCinema(2), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(13),
-				CinemaService.getCinema(2), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-
-		showtimeList.add(new Showtime(MovieService.getMovie(6),
-				CinemaService.getCinema(3), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-		showtimeList.add(new Showtime(MovieService.getMovie(10),
-				CinemaService.getCinema(3), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-
-		showtimeList.add(new Showtime(MovieService.getMovie(11),
-				CinemaService.getCinema(4), rand.nextInt() % 5 + 10,
-				"09.12;10.12;11.12 16:00;17:30;21:15"));
-
-		sortByTitle();
 	}
 }

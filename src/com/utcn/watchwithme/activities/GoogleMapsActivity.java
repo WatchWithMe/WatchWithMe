@@ -32,6 +32,11 @@ import com.utcn.watchwithme.internet.NetworkUtilities;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.services.CinemaService;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class GoogleMapsActivity extends MapActivity {
 
 	private final String DEBUG_TAG = "GoogleMapsActivity";

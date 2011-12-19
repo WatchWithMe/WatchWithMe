@@ -2,32 +2,75 @@ package com.utcn.watchwithme.services;
 
 import java.util.ArrayList;
 
-import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Cinema;
+import com.utcn.watchwithme.repository.RemoteCinemaRepository;
+import com.utcn.watchwithme.repository.StaticCinemaRepository;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class CinemaService {
 
 	private static ArrayList<Cinema> cinemaList = new ArrayList<Cinema>();
 	private static ArrayList<Cinema> cinemaFavList = new ArrayList<Cinema>();
 	private static Cinema selected;
+	private static boolean flag;
+
+	public static void eraseData() {
+		cinemaList = new ArrayList<Cinema>();
+		cinemaFavList = new ArrayList<Cinema>();
+		selected = null;
+	}
+
+	public static boolean updated() {
+		return flag;
+	}
 
 	public static Cinema getCinema(int id) {
-		// start loading if cinema not available in the list
 		for (Cinema c : cinemaList) {
 			if (c.getId() == id) {
 				return c;
 			}
 		}
-		return null;
+
+		Cinema c = RemoteCinemaRepository.getCinema(id);
+		if (c != null) {
+			return c;
+		}
+		return StaticCinemaRepository.getCinema(id);
 	}
 
 	public static ArrayList<Cinema> getAllCinemas() {
-		// start loading if cinemas not available in the list
+		if (cinemaList.size() == 0) {
+			cinemaList = RemoteCinemaRepository.getAllCinemas();
+			if (cinemaList == null) {
+				cinemaList = StaticCinemaRepository.getAllCinemas();
+				flag = false;
+			} else {
+				flag = true;
+			}
+
+			for (Cinema cinema : cinemaList) {
+				if (cinema.isFavorite()) {
+					cinemaFavList.add(cinema);
+				}
+			}
+		}
 		return cinemaList;
 	}
 
 	public static ArrayList<Cinema> getFavoriteCinemas() {
-		// start loading if cinemas not available in the list
+		ArrayList<Cinema> all = getAllCinemas();
+		cinemaFavList.clear();
+
+		for (Cinema cinema : all) {
+			if (cinema.isFavorite()) {
+				cinemaFavList.add(cinema);
+			}
+		}
+
 		return cinemaFavList;
 	}
 
@@ -51,31 +94,6 @@ public class CinemaService {
 				if (c.isFavorite()) {
 					cinemaFavList.add(c);
 				}
-			}
-		}
-	}
-
-	static {
-		cinemaList
-				.add(new Cinema(
-						"Odeon Cineplex",
-						"Polus Center, Str. Avram Iancu, nr. 492 - 500, comuna Floresti, Cluj-Napoca",
-						true, R.drawable.cinema_odeon, 46749267, 23530730));
-		cinemaList.add(new Cinema("Cinema City",
-				"Str Alexandru Vaida Voievod, Nr. 53-55 (Iulius Mall)", false,
-				R.drawable.cinema_city, 46771761, 23625906));
-		cinemaList.add(new Cinema("Florin Piersic",
-				"P-ta Mihai Viteazul nr.11", true,
-				R.drawable.cinema_florin_piersic, 46772217, 23587689));
-		cinemaList.add(new Cinema("Cinema Victoria", "B-dul Eroilor nr.51",
-				false, R.drawable.cinema_victoria, 46770659, 23596112));
-		cinemaList.add(new Cinema("Arta-Eurimages - Cluj",
-				"Str. Universitatii, nr.3", false, R.drawable.cinema_arta,
-				46768080, 23590165));
-
-		for (Cinema cinema : cinemaList) {
-			if (cinema.isFavorite()) {
-				cinemaFavList.add(cinema);
 			}
 		}
 	}

@@ -1,8 +1,13 @@
-package com.utcn.watchwithme.database;
+package com.utcn.watchwithme.repository;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class MovieTable {
 
 	private static final String DATABASE_CREATE = "create table movie "

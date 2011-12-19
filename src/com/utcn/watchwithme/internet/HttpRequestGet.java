@@ -17,9 +17,15 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
-public class HttpRequest {
+/**
+ * 
+ * @author Vlad
+ * 
+ */
+public class HttpRequestGet {
 
 	private static HttpClient httpClient;
+	private static final int TIMEOUT = 2000;
 
 	static {
 		HttpParams params = new BasicHttpParams();
@@ -36,10 +42,10 @@ public class HttpRequest {
 		httpClient = new DefaultHttpClient(manager, params);
 	}
 
-	public InputStream getStreamForUri(String uri) throws IOException {
+	public static InputStream getStreamForUri(String uri) throws IOException {
 		HttpGet get = new HttpGet(uri);
 		HttpParams params = httpClient.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, 1000);
+		HttpConnectionParams.setConnectionTimeout(params, TIMEOUT);
 
 		HttpResponse httpResponse = httpClient.execute(get);
 		return httpResponse.getEntity().getContent();

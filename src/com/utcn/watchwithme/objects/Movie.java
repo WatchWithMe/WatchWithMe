@@ -6,18 +6,32 @@ public class Movie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public static int nextID = 0;
+
 	private int id;
 	private String title;
 	private String details;
+	private String imageURL;
 	private String trailerURL;
 	private int length; // in minutes
+	private float rating;
+
 	private int icon = -1;
 	private boolean ignored = false;
-	private float rating;
 	private int ratingCounts;
 
 	public Movie() {
 		this.id = nextID++;
+	}
+
+	public Movie(int id, String title, String details, int length,
+			String trailer, String image, float rating) {
+		this.id = id;
+		this.title = title;
+		this.details = details;
+		this.length = length;
+		this.trailerURL = trailer;
+		this.imageURL = image;
+		this.rating = rating;
 	}
 
 	public Movie(String title, int icon) {
@@ -126,5 +140,9 @@ public class Movie implements Serializable {
 
 	public int getRatingCount() {
 		return this.ratingCounts;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 }

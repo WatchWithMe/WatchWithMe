@@ -1,5 +1,6 @@
 package com.utcn.watchwithme.adapters;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Movie;
+import com.utcn.watchwithme.repository.RemoteImageRepository;
 
 public class MoviesAdapter extends BaseAdapter {
 
@@ -58,7 +60,20 @@ public class MoviesAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.icon.setBackgroundResource(movie.getIcon());
+		if (RemoteImageRepository.hasImage(movie.getImageURL()) == false) {
+			if (movie.getIcon() == -1) {
+				holder.icon.setImageResource(R.drawable.no_image);
+			} else {
+				holder.icon.setImageResource(movie.getIcon());
+			}
+		} else {
+			try {
+				holder.icon.setImageBitmap(RemoteImageRepository
+						.getBitmap(movie.getImageURL()));
+			} catch (IOException e) {
+				holder.icon.setImageResource(R.drawable.no_image);
+			}
+		}
 		holder.name.setText(movie.getTitle());
 		return convertView;
 	}

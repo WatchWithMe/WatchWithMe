@@ -4,6 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
+
 public class NetworkUtilities {
 
 	public static boolean internetConection(Context context) {

@@ -11,12 +11,23 @@ public class Cinema implements Serializable {
 	private int id;
 	private String name;
 	private String location;
+	private String imageURL;
 	private GeoPoint geoPoint;
+
 	private boolean favorite;
 	private int icon = -1;
 
 	public Cinema() {
 		this.id = nextID++;
+	}
+
+	public Cinema(int id, String name, String address, String imageURL,
+			int lat, int lng) {
+		this.id = id;
+		this.name = name;
+		this.location = address;
+		this.imageURL = imageURL;
+		this.geoPoint = new GeoPoint(lat, lng);
 	}
 
 	public Cinema(String name, String location, boolean favorite) {
@@ -98,6 +109,10 @@ public class Cinema implements Serializable {
 
 	public void setFavorite(boolean favorite) {
 		this.favorite = favorite;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 
 }

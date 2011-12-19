@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import com.utcn.watchwithme.objects.Reminder;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class AgendaService {
 
 	private static ArrayList<Reminder> reminderList = new ArrayList<Reminder>();

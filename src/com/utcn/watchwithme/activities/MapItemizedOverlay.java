@@ -10,6 +10,11 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class MapItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
 	private static OverlayItem selectedItem;

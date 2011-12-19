@@ -1,4 +1,4 @@
-package com.utcn.watchwithme.database;
+package com.utcn.watchwithme.repository;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class MovieDbAdapter {
 
 	public static final String KEY_ROWID = "_id";

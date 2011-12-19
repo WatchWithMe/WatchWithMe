@@ -1,9 +1,9 @@
 package com.utcn.watchwithme.adapters;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +12,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
+import com.utcn.watchwithme.objects.Movie;
 import com.utcn.watchwithme.objects.Showtime;
+import com.utcn.watchwithme.repository.RemoteImageRepository;
 
+/**
+ * 
+ * @author Vlad
+ * 
+ */
 public class ShowtimeAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 	private ArrayList<Showtime> items;
-	private Resources res;
 
 	public ShowtimeAdapter(Context context, ArrayList<Showtime> items) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		mInflater = LayoutInflater.from(context);
 		this.items = items;
-		this.res = context.getResources();
 	}
 
 	public void setItems(ArrayList<Showtime> items) {
@@ -71,9 +76,21 @@ public class ShowtimeAdapter extends BaseAdapter {
 
 		// Bind the data efficiently with the holder.
 		Showtime showtime = items.get(position);
-		if (showtime.getMovie().getIcon() != -1)
-			holder.image.setImageDrawable(res.getDrawable(showtime.getMovie()
-					.getIcon()));
+		Movie movie = showtime.getMovie();
+		if (RemoteImageRepository.hasImage(movie.getImageURL()) == false) {
+			if (showtime.getMovie().getIcon() != -1) {
+				holder.image.setImageResource(movie.getIcon());
+			} else {
+				holder.image.setImageResource(R.drawable.no_image);
+			}
+		} else {
+			try {
+				holder.image.setImageBitmap(RemoteImageRepository
+						.getBitmap(movie.getImageURL()));
+			} catch (IOException e) {
+				holder.image.setImageResource(R.drawable.no_image);
+			}
+		}
 		holder.title.setText(showtime.getMovie().getTitle());
 		holder.hours.setText(showtime.getHours());
 		holder.price.setText(showtime.getPriceString());
