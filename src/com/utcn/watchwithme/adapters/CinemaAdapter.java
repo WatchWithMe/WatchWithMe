@@ -1,6 +1,5 @@
 package com.utcn.watchwithme.adapters;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -74,18 +73,22 @@ public class CinemaAdapter extends BaseAdapter {
 
 		// Bind the data efficiently with the holder.
 		Cinema cinema = items.get(position);
-		if (RemoteImageRepository.hasImage(cinema.getImageURL()) == false) {
+		if (cinema.getImageURL() != null) {
+			if (RemoteImageRepository.hasImage(cinema.getImageURL())) {
+				try {
+					holder.icon.setImageBitmap(RemoteImageRepository
+							.getBitmap(cinema.getImageURL()));
+				} catch (Exception e) {
+					holder.icon.setImageResource(R.drawable.no_image);
+				}
+			} else {
+				holder.icon.setImageResource(R.drawable.no_image);
+			}
+		} else {
 			if (cinema.getIcon() == -1) {
 				holder.icon.setImageResource(R.drawable.no_image);
 			} else {
 				holder.icon.setImageResource(cinema.getIcon());
-			}
-		} else {
-			try {
-				holder.icon.setImageBitmap(RemoteImageRepository
-						.getBitmap(cinema.getImageURL()));
-			} catch (IOException e) {
-				holder.icon.setImageResource(R.drawable.no_image);
 			}
 		}
 		holder.name.setText(cinema.getName());

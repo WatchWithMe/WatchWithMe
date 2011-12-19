@@ -160,7 +160,10 @@ public class CinemaFavoritesListActivity extends ListActivity {
 									+ "Data might be outdated.");
 				}
 				for (Cinema c : cinemas) {
-					new ImageTask(weakActivity.get()).execute(c.getImageURL());
+					if (c.getImageURL() != null) {
+						new ImageTask(weakActivity.get()).execute(c
+								.getImageURL());
+					}
 				}
 			}
 		}

@@ -48,7 +48,6 @@ public class Movie implements Serializable {
 		this.title = title;
 		this.icon = icon;
 		this.details = "";
-		this.trailerURL = "";
 		this.length = 100;
 		this.trailerURL = url;
 	}

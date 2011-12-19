@@ -77,17 +77,21 @@ public class ShowtimeAdapter extends BaseAdapter {
 		// Bind the data efficiently with the holder.
 		Showtime showtime = items.get(position);
 		Movie movie = showtime.getMovie();
-		if (RemoteImageRepository.hasImage(movie.getImageURL()) == false) {
-			if (showtime.getMovie().getIcon() != -1) {
-				holder.image.setImageResource(movie.getIcon());
+		if (movie.getImageURL() != null) {
+			if (RemoteImageRepository.hasImage(movie.getImageURL())) {
+				try {
+					holder.image.setImageBitmap(RemoteImageRepository
+							.getBitmap(movie.getImageURL()));
+				} catch (IOException e) {
+					holder.image.setImageResource(R.drawable.no_image);
+				}
 			} else {
 				holder.image.setImageResource(R.drawable.no_image);
 			}
 		} else {
-			try {
-				holder.image.setImageBitmap(RemoteImageRepository
-						.getBitmap(movie.getImageURL()));
-			} catch (IOException e) {
+			if (showtime.getMovie().getIcon() != -1) {
+				holder.image.setImageResource(movie.getIcon());
+			} else {
 				holder.image.setImageResource(R.drawable.no_image);
 			}
 		}

@@ -259,8 +259,10 @@ public class CinemaActivity extends Activity {
 									+ "Data might be outdated.");
 				}
 				for (Showtime st : sts) {
-					new ImageTask(weakActivity.get()).execute(st.getMovie()
-							.getImageURL());
+					if (st.getMovie().getImageURL() != null) {
+						new ImageTask(weakActivity.get()).execute(st.getMovie()
+								.getImageURL());
+					}
 				}
 			}
 		}

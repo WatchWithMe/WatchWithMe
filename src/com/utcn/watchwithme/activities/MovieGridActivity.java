@@ -218,7 +218,10 @@ public class MovieGridActivity extends Activity {
 									+ "Data might be outdated.");
 				}
 				for (Movie m : movies) {
-					new ImageTask(weakActivity.get()).execute(m.getImageURL());
+					if (m.getImageURL() != null) {
+						new ImageTask(weakActivity.get()).execute(m
+								.getImageURL());
+					}
 				}
 			}
 		}

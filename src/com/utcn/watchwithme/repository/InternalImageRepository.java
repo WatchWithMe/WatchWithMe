@@ -41,6 +41,9 @@ public class InternalImageRepository {
 	}
 
 	public static boolean hasImage(String imageURL) {
+		if (imageURL == null) {
+			return false;
+		}
 		String filename = urlToFilename(imageURL);
 		return map.containsKey(filename);
 	}

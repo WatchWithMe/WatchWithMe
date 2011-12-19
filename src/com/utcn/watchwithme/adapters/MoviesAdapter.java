@@ -60,18 +60,22 @@ public class MoviesAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		if (RemoteImageRepository.hasImage(movie.getImageURL()) == false) {
+		if (movie.getImageURL() != null) {
+			if (RemoteImageRepository.hasImage(movie.getImageURL())) {
+				try {
+					holder.icon.setImageBitmap(RemoteImageRepository
+							.getBitmap(movie.getImageURL()));
+				} catch (IOException e) {
+					holder.icon.setImageResource(R.drawable.no_image);
+				}
+			} else {
+				holder.icon.setImageResource(R.drawable.no_image);
+			}
+		} else {
 			if (movie.getIcon() == -1) {
 				holder.icon.setImageResource(R.drawable.no_image);
 			} else {
 				holder.icon.setImageResource(movie.getIcon());
-			}
-		} else {
-			try {
-				holder.icon.setImageBitmap(RemoteImageRepository
-						.getBitmap(movie.getImageURL()));
-			} catch (IOException e) {
-				holder.icon.setImageResource(R.drawable.no_image);
 			}
 		}
 		holder.name.setText(movie.getTitle());
