@@ -188,8 +188,12 @@ public class CinemaListActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(Bitmap bmp) {
-			if (bmp != null) {
-				weakActivity.get().notifyAdapter();
+			try {
+				if (bmp != null) {
+					weakActivity.get().notifyAdapter();
+				}
+			} catch (Exception e) {
+				Log.e("ImageTask", "error here");
 			}
 		}
 	}
