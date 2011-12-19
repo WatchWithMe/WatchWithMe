@@ -22,14 +22,19 @@ public class RemoteImageRepository {
 	public static Bitmap getBitmap(String imageURL) throws IOException {
 		Bitmap bitmap = map.get(imageURL);
 		if (bitmap == null) {
-			bitmap = getBitmapFromURL(imageURL);
+			bitmap = InternalImageRepository.loadImage(imageURL);
+			if (bitmap == null) {
+				bitmap = getBitmapFromURL(imageURL);
+				InternalImageRepository.save(bitmap, imageURL);
+			}
 			map.put(imageURL, bitmap);
 		}
 		return bitmap;
 	}
 
 	public static boolean hasImage(String imageURL) {
-		return map.containsKey(imageURL);
+		return map.containsKey(imageURL)
+				|| InternalImageRepository.hasImage(imageURL);
 	}
 
 	private static Bitmap getBitmapFromURL(String src) throws IOException {
