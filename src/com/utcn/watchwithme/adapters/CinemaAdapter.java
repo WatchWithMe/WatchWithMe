@@ -3,6 +3,7 @@ package com.utcn.watchwithme.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Cinema;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
+import com.utcn.watchwithme.services.ImageService;
 
 /**
  * 
@@ -73,14 +74,12 @@ public class CinemaAdapter extends BaseAdapter {
 
 		// Bind the data efficiently with the holder.
 		Cinema cinema = items.get(position);
-		if (cinema.getImageURL() != null) {
-			if (RemoteImageRepository.hasImage(cinema.getImageURL())) {
-				try {
-					holder.icon.setImageBitmap(RemoteImageRepository
-							.getBitmap(cinema.getImageURL()));
-				} catch (Exception e) {
-					holder.icon.setImageResource(R.drawable.no_image);
-				}
+		ImageService is = ImageService.getInstance();
+		String imageURL = cinema.getImageURL();
+		if (imageURL != null) {
+			Bitmap bmp = is.getImage(imageURL);
+			if (bmp != null) {
+				holder.icon.setImageBitmap(bmp);
 			} else {
 				holder.icon.setImageResource(R.drawable.no_image);
 			}

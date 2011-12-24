@@ -1,11 +1,11 @@
 package com.utcn.watchwithme.activities;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,7 +28,7 @@ import android.widget.GridView;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.MoviesAdapter;
 import com.utcn.watchwithme.objects.Movie;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
+import com.utcn.watchwithme.services.ImageService;
 import com.utcn.watchwithme.services.MovieService;
 
 public class MovieGridActivity extends Activity {
@@ -41,6 +41,7 @@ public class MovieGridActivity extends Activity {
 	private EditText edittext;
 	private ArrayList<Movie> movies = new ArrayList<Movie>();
 	private Movie pressedMovie;
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class MovieGridActivity extends Activity {
 
 		registerForContextMenu(mGridView);
 
+		dialog = ProgressDialog.show(this, "",
+				"Please wait for few seconds...", true);
 		new LoadTask(this).execute();
 	}
 
@@ -171,6 +174,10 @@ public class MovieGridActivity extends Activity {
 		alert.show();
 	}
 
+	public void dismissLoadingDialog() {
+		dialog.dismiss();
+	}
+
 	private void changeContent(ArrayList<Movie> movies) {
 		this.movies = movies;
 		mAdapter.setItems(movies);
@@ -210,6 +217,7 @@ public class MovieGridActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(ArrayList<Movie> movies) {
+			weakActivity.get().dismissLoadingDialog();
 			if (movies != null) {
 				weakActivity.get().changeContent(movies);
 				if (!MovieService.updated()) {
@@ -238,8 +246,9 @@ public class MovieGridActivity extends Activity {
 		@Override
 		protected Bitmap doInBackground(String... urls) {
 			try {
-				return RemoteImageRepository.getBitmap(urls[0]);
-			} catch (IOException e) {
+				ImageService is = ImageService.getInstance();
+				return is.loadImage(urls[0]);
+			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}

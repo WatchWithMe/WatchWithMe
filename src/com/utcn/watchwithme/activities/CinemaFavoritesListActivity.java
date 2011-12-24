@@ -25,8 +25,8 @@ import android.widget.RelativeLayout;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.CinemaAdapter;
 import com.utcn.watchwithme.objects.Cinema;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
 import com.utcn.watchwithme.services.CinemaService;
+import com.utcn.watchwithme.services.ImageService;
 
 /**
  * 
@@ -40,6 +40,8 @@ public class CinemaFavoritesListActivity extends ListActivity {
 	private ArrayList<Cinema> items = new ArrayList<Cinema>();
 	private ListView lv;
 	private CinemaAdapter adapter;
+
+	// private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class CinemaFavoritesListActivity extends ListActivity {
 			}
 		});
 
+		// dialog = ProgressDialog.show(this, "",
+		// "Please wait for few seconds...", true);
 		new LoadTask(this).execute();
 	}
 
@@ -112,6 +116,10 @@ public class CinemaFavoritesListActivity extends ListActivity {
 		adapter.setItems(items);
 	}
 
+	public void dismissLoadingDialog() {
+		// dialog.dismiss();
+	}
+
 	private void changeContent(ArrayList<Cinema> cinemas) {
 		this.items = cinemas;
 		adapter.setItems(cinemas);
@@ -152,12 +160,13 @@ public class CinemaFavoritesListActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(ArrayList<Cinema> cinemas) {
+			weakActivity.get().dismissLoadingDialog();
 			if (cinemas != null) {
 				weakActivity.get().changeContent(cinemas);
 				if (!CinemaService.updated()) {
-					weakActivity.get().showAlert(
-							"Connection to the server failed.\n"
-									+ "Data might be outdated.");
+					// weakActivity.get().showAlert(
+					// "Connection to the server failed.\n"
+					// + "Data might be outdated.");
 				}
 				for (Cinema c : cinemas) {
 					if (c.getImageURL() != null) {
@@ -181,7 +190,8 @@ public class CinemaFavoritesListActivity extends ListActivity {
 		@Override
 		protected Bitmap doInBackground(String... urls) {
 			try {
-				return RemoteImageRepository.getBitmap(urls[0]);
+				ImageService is = ImageService.getInstance();
+				return is.loadImage(urls[0]);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;

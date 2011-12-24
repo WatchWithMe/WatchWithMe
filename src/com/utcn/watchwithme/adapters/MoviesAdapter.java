@@ -1,9 +1,9 @@
 package com.utcn.watchwithme.adapters;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Movie;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
+import com.utcn.watchwithme.services.ImageService;
 
 public class MoviesAdapter extends BaseAdapter {
 
@@ -60,14 +60,12 @@ public class MoviesAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		if (movie.getImageURL() != null) {
-			if (RemoteImageRepository.hasImage(movie.getImageURL())) {
-				try {
-					holder.icon.setImageBitmap(RemoteImageRepository
-							.getBitmap(movie.getImageURL()));
-				} catch (IOException e) {
-					holder.icon.setImageResource(R.drawable.no_image);
-				}
+		ImageService is = ImageService.getInstance();
+		String imageURL = movie.getImageURL();
+		if (imageURL != null) {
+			Bitmap bmp = is.getImage(imageURL);
+			if (bmp != null) {
+				holder.icon.setImageBitmap(bmp);
 			} else {
 				holder.icon.setImageResource(R.drawable.no_image);
 			}

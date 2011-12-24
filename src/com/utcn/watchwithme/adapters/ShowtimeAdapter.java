@@ -1,9 +1,9 @@
 package com.utcn.watchwithme.adapters;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Movie;
 import com.utcn.watchwithme.objects.Showtime;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
+import com.utcn.watchwithme.services.ImageService;
 
 /**
  * 
@@ -77,14 +77,12 @@ public class ShowtimeAdapter extends BaseAdapter {
 		// Bind the data efficiently with the holder.
 		Showtime showtime = items.get(position);
 		Movie movie = showtime.getMovie();
-		if (movie.getImageURL() != null) {
-			if (RemoteImageRepository.hasImage(movie.getImageURL())) {
-				try {
-					holder.image.setImageBitmap(RemoteImageRepository
-							.getBitmap(movie.getImageURL()));
-				} catch (IOException e) {
-					holder.image.setImageResource(R.drawable.no_image);
-				}
+		ImageService is = ImageService.getInstance();
+		String imageURL = movie.getImageURL();
+		if (imageURL != null) {
+			Bitmap bmp = is.getImage(imageURL);
+			if (bmp != null) {
+				holder.image.setImageBitmap(bmp);
 			} else {
 				holder.image.setImageResource(R.drawable.no_image);
 			}

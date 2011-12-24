@@ -51,6 +51,7 @@ public class CinemaService {
 				flag = true;
 			}
 
+			cinemaFavList.clear();
 			for (Cinema cinema : cinemaList) {
 				if (cinema.isFavorite()) {
 					cinemaFavList.add(cinema);
@@ -61,15 +62,6 @@ public class CinemaService {
 	}
 
 	public static ArrayList<Cinema> getFavoriteCinemas() {
-		ArrayList<Cinema> all = getAllCinemas();
-		cinemaFavList.clear();
-
-		for (Cinema cinema : all) {
-			if (cinema.isFavorite()) {
-				cinemaFavList.add(cinema);
-			}
-		}
-
 		return cinemaFavList;
 	}
 

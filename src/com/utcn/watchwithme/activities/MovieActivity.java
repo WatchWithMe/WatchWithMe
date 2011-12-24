@@ -1,7 +1,5 @@
 package com.utcn.watchwithme.activities;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +13,7 @@ import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Movie;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
+import com.utcn.watchwithme.services.ImageService;
 import com.utcn.watchwithme.services.MovieService;
 
 public class MovieActivity extends Activity implements OnClickListener {
@@ -43,7 +41,8 @@ public class MovieActivity extends Activity implements OnClickListener {
 		mRatingBar = (RatingBar) findViewById(R.id.movie_detail_rating);
 		mRatingText = (TextView) findViewById(R.id.movie_detail_rating_text);
 		mMovieIcon = (ImageView) findViewById(R.id.movie_detail_icon);
-		if (RemoteImageRepository.hasImage(movie.getImageURL()) == false) {
+		ImageService is = ImageService.getInstance();
+		if (movie.getImageURL() == null) {
 			if (movie.getIcon() != -1) {
 				mMovieIcon.setImageResource(movie.getIcon());
 			} else {
@@ -51,9 +50,8 @@ public class MovieActivity extends Activity implements OnClickListener {
 			}
 		} else {
 			try {
-				mMovieIcon.setImageBitmap(RemoteImageRepository.getBitmap(movie
-						.getImageURL()));
-			} catch (IOException e) {
+				mMovieIcon.setImageBitmap(is.getImage(movie.getImageURL()));
+			} catch (Exception e) {
 				mMovieIcon.setImageResource(R.drawable.no_image);
 			}
 		}

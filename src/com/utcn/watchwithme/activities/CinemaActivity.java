@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,9 +30,9 @@ import com.utcn.watchwithme.adapters.ShowtimeAdapter;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.objects.Reminder;
 import com.utcn.watchwithme.objects.Showtime;
-import com.utcn.watchwithme.repository.RemoteImageRepository;
 import com.utcn.watchwithme.services.AgendaService;
 import com.utcn.watchwithme.services.CinemaService;
+import com.utcn.watchwithme.services.ImageService;
 import com.utcn.watchwithme.services.MovieService;
 import com.utcn.watchwithme.services.ShowtimeService;
 
@@ -53,6 +54,7 @@ public class CinemaActivity extends Activity {
 	private ShowtimeAdapter adapter;
 	private Showtime pressedShowtime;
 	private ListView listview;
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class CinemaActivity extends Activity {
 		});
 
 		registerForContextMenu(listview);
+		dialog = ProgressDialog.show(this, "",
+				"Please wait for few seconds...", true);
 		new LoadTask(this).execute();
 	}
 
@@ -212,6 +216,10 @@ public class CinemaActivity extends Activity {
 		startActivity(intent);
 	}
 
+	public void dismissLoadingDialog() {
+		dialog.dismiss();
+	}
+
 	private void changeContent(ArrayList<Showtime> sts) {
 		this.showtimes = sts;
 		adapter.setItems(sts);
@@ -251,6 +259,7 @@ public class CinemaActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(ArrayList<Showtime> sts) {
+			weakActivity.get().dismissLoadingDialog();
 			if (sts != null) {
 				weakActivity.get().changeContent(sts);
 				if (!ShowtimeService.updated()) {
@@ -279,7 +288,8 @@ public class CinemaActivity extends Activity {
 		@Override
 		protected Bitmap doInBackground(String... urls) {
 			try {
-				return RemoteImageRepository.getBitmap(urls[0]);
+				ImageService is = ImageService.getInstance();
+				return is.loadImage(urls[0]);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;
