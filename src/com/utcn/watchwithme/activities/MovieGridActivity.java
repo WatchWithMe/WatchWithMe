@@ -11,15 +11,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -52,30 +52,43 @@ public class MovieGridActivity extends Activity {
 
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				goToMovieActivity(position);
 			}
 		});
 
-		edittext.setOnKeyListener(new OnKeyListener() {
+		edittext.addTextChangedListener(new TextWatcher() {
+
 			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if ((event.getAction() == KeyEvent.ACTION_DOWN)
-						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
-					movies = MovieService.searchForMovie(edittext.getText()
-							.toString());
-					mAdapter.setItems(movies);
-					return true;
-				}
-				return false;
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				movies = MovieService.searchForMovie(edittext.getText().toString());
+				mAdapter.setItems(movies);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
 			}
 		});
+		// edittext.setOnKeyListener(new OnKeyListener() {
+		// @Override
+		// public boolean onKey(View v, int keyCode, KeyEvent event) {
+		// if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode ==
+		// KeyEvent.KEYCODE_ENTER)) {
+		// movies = MovieService.searchForMovie(edittext.getText().toString());
+		// mAdapter.setItems(movies);
+		// return true;
+		// }
+		// return false;
+		// }
+		// });
 
 		registerForContextMenu(mGridView);
 
-		dialog = ProgressDialog.show(this, "",
-				"Please wait for few seconds...", true);
+		dialog = ProgressDialog.show(this, "", "Please wait for few seconds...", true);
 		new LoadTask(this).execute();
 	}
 
@@ -122,8 +135,7 @@ public class MovieGridActivity extends Activity {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		if (v.getId() == R.id.grid) {
@@ -148,25 +160,21 @@ public class MovieGridActivity extends Activity {
 
 	private void ignoreConfirmation() {
 		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		alt_bld.setMessage("Do you really want to ignore this movie ?")
-				.setCancelable(false)
-				.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								MovieService.ignoreMovie(pressedMovie.getId());
-								movies.remove(pressedMovie);
-								mAdapter.setItems(movies);
-								Log.i(DEBUG_TAG, "Clicked on Yes Button");
-							}
-						})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						Log.i(DEBUG_TAG, "Clicked on No Button");
-						dialog.cancel();
-					}
-				});
+		alt_bld.setMessage("Do you really want to ignore this movie ?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				MovieService.ignoreMovie(pressedMovie.getId());
+				movies.remove(pressedMovie);
+				mAdapter.setItems(movies);
+				Log.i(DEBUG_TAG, "Clicked on Yes Button");
+			}
+		}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				Log.i(DEBUG_TAG, "Clicked on No Button");
+				dialog.cancel();
+			}
+		});
 		AlertDialog alert = alt_bld.create();
 		alert.setTitle("Ignore " + pressedMovie.getTitle());
 		// Icon for AlertDialog
@@ -190,18 +198,16 @@ public class MovieGridActivity extends Activity {
 	private void showAlert(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setMessage(message);
-		ad.setButton("OK",
-				new android.content.DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+		ad.setButton("OK", new android.content.DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 		ad.show();
 	}
 
-	private static class LoadTask extends
-			AsyncTask<Void, Void, ArrayList<Movie>> {
+	private static class LoadTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
 
 		private WeakReference<MovieGridActivity> weakActivity;
 
@@ -221,14 +227,11 @@ public class MovieGridActivity extends Activity {
 			if (movies != null) {
 				weakActivity.get().changeContent(movies);
 				if (!MovieService.updated()) {
-					weakActivity.get().showAlert(
-							"Connection to the server failed.\n"
-									+ "Data might be outdated.");
+					weakActivity.get().showAlert("Connection to the server failed.\n" + "Data might be outdated.");
 				}
 				for (Movie m : movies) {
 					if (m.getImageURL() != null) {
-						new ImageTask(weakActivity.get()).execute(m
-								.getImageURL());
+						new ImageTask(weakActivity.get()).execute(m.getImageURL());
 					}
 				}
 			}

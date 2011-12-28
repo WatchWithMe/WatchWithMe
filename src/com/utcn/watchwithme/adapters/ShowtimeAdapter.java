@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
+import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.objects.Movie;
 import com.utcn.watchwithme.objects.Showtime;
 import com.utcn.watchwithme.services.ImageService;
@@ -25,11 +26,13 @@ public class ShowtimeAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 	private ArrayList<Showtime> items;
+	private boolean mForMovies;
 
-	public ShowtimeAdapter(Context context, ArrayList<Showtime> items) {
+	public ShowtimeAdapter(Context context, ArrayList<Showtime> items, boolean forMovies) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		mInflater = LayoutInflater.from(context);
 		this.items = items;
+		this.mForMovies = forMovies;
 	}
 
 	public void setItems(ArrayList<Showtime> items) {
@@ -60,14 +63,10 @@ public class ShowtimeAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.showtime_list_item, null);
 
 			holder = new ViewHolder();
-			holder.image = (ImageView) convertView
-					.findViewById(R.id.showtime_image);
-			holder.title = (TextView) convertView
-					.findViewById(R.id.showtime_title);
-			holder.hours = (TextView) convertView
-					.findViewById(R.id.showtime_hours);
-			holder.price = (TextView) convertView
-					.findViewById(R.id.showtime_price);
+			holder.image = (ImageView) convertView.findViewById(R.id.showtime_image);
+			holder.title = (TextView) convertView.findViewById(R.id.showtime_title);
+			holder.hours = (TextView) convertView.findViewById(R.id.showtime_hours);
+			holder.price = (TextView) convertView.findViewById(R.id.showtime_price);
 
 			convertView.setTag(holder);
 		} else {
@@ -76,24 +75,37 @@ public class ShowtimeAdapter extends BaseAdapter {
 
 		// Bind the data efficiently with the holder.
 		Showtime showtime = items.get(position);
-		Movie movie = showtime.getMovie();
+		String imageUrl = null;
+		String title = null;
+		if (mForMovies) {
+			// display info about movie
+			Movie movie = showtime.getMovie();
+			imageUrl = movie.getImageURL();
+			title = movie.getTitle();
+		} else {
+			// display info about cinemas
+			Cinema cinema = showtime.getCinema();
+			imageUrl = cinema.getImageURL();
+			title = cinema.getName();
+		}
 		ImageService is = ImageService.getInstance();
-		String imageURL = movie.getImageURL();
-		if (imageURL != null) {
-			Bitmap bmp = is.getImage(imageURL);
+		if (imageUrl != null) {
+			Bitmap bmp = is.getImage(imageUrl);
 			if (bmp != null) {
 				holder.image.setImageBitmap(bmp);
 			} else {
 				holder.image.setImageResource(R.drawable.no_image);
 			}
-		} else {
-			if (showtime.getMovie().getIcon() != -1) {
-				holder.image.setImageResource(movie.getIcon());
-			} else {
-				holder.image.setImageResource(R.drawable.no_image);
-			}
 		}
-		holder.title.setText(showtime.getMovie().getTitle());
+		// TODO Do not fall back to taking info from project folders
+		// else {
+		// if (showtime.getMovie().getIcon() != -1) {
+		// holder.image.setImageResource(movie.getIcon());
+		// } else {
+		// holder.image.setImageResource(R.drawable.no_image);
+		// }
+		// }
+		holder.title.setText(title);
 		holder.hours.setText(showtime.getHours());
 		holder.price.setText(showtime.getPriceString());
 

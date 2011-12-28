@@ -1,22 +1,26 @@
 package com.utcn.watchwithme.activities;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.utcn.watchwithme.R;
+import com.utcn.watchwithme.adapters.ShowtimeAdapter;
 import com.utcn.watchwithme.objects.Movie;
 import com.utcn.watchwithme.services.ImageService;
 import com.utcn.watchwithme.services.MovieService;
+import com.utcn.watchwithme.services.ShowtimeService;
 
-public class MovieActivity extends Activity implements OnClickListener {
+public class MovieActivity extends ListActivity implements OnClickListener {
 
 	private TextView mTitleText;
 	private RatingBar mRatingBar;
@@ -25,6 +29,7 @@ public class MovieActivity extends Activity implements OnClickListener {
 	private Button mRateButton;
 	private TextView mRatingText;
 	private TextView mDetailsText;
+	private ListView mListView;
 	private Movie movie = MovieService.getSelected();
 
 	@Override
@@ -33,14 +38,27 @@ public class MovieActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.movie_detail);
 		setUpViews();
 		updateRatingText();
+		setUpAdapter();
+	}
+
+	private void setUpAdapter() {
+		ShowtimeAdapter adapter = new ShowtimeAdapter(this, ShowtimeService.getForMovie(movie.getId()), false);
+		setListAdapter(adapter);
 	}
 
 	private void setUpViews() {
-		mTitleText = (TextView) findViewById(R.id.movie_detail_title);
+		mListView = (ListView) findViewById(android.R.id.list);
+		LayoutInflater inflater = getLayoutInflater();
+		View header = (View) inflater.inflate(R.layout.movie_detail_header, null, false);
+		TextView v = new TextView(this);
+		v.setText("LALALA");
+		// mListView.addHeaderView(header, null, false);
+		mListView.addHeaderView(header);
+		mTitleText = (TextView) header.findViewById(R.id.movie_detail_title);
 		mTitleText.setText(movie.getTitle());
-		mRatingBar = (RatingBar) findViewById(R.id.movie_detail_rating);
-		mRatingText = (TextView) findViewById(R.id.movie_detail_rating_text);
-		mMovieIcon = (ImageView) findViewById(R.id.movie_detail_icon);
+		mRatingBar = (RatingBar) header.findViewById(R.id.movie_detail_rating);
+		mRatingText = (TextView) header.findViewById(R.id.movie_detail_rating_text);
+		mMovieIcon = (ImageView) header.findViewById(R.id.movie_detail_icon);
 		ImageService is = ImageService.getInstance();
 		if (movie.getImageURL() == null) {
 			if (movie.getIcon() != -1) {
@@ -55,12 +73,12 @@ public class MovieActivity extends Activity implements OnClickListener {
 				mMovieIcon.setImageResource(R.drawable.no_image);
 			}
 		}
-		mRateButton = (Button) findViewById(R.id.movie_detail_rate_button);
+		mRateButton = (Button) header.findViewById(R.id.movie_detail_rate_button);
 		mRateButton.setOnClickListener(this);
-		mYoutubeIcon = (ImageView) findViewById(R.id.movie_youtube);
+		mYoutubeIcon = (ImageView) header.findViewById(R.id.movie_youtube);
 		mYoutubeIcon.setOnClickListener(this);
 
-		mDetailsText = (TextView) findViewById(R.id.movie_details_text);
+		mDetailsText = (TextView) header.findViewById(R.id.movie_details_text);
 		mDetailsText.setText(movie.getDetails());
 	}
 
@@ -80,8 +98,7 @@ public class MovieActivity extends Activity implements OnClickListener {
 	}
 
 	private void updateRatingText() {
-		mRatingText.setText("Rating: " + movie.getRating() + ", Total: "
-				+ movie.getRatingCount());
+		mRatingText.setText("Rating: " + movie.getRating() + ", Total: " + movie.getRatingCount());
 		mRatingBar.setRating(movie.getRating());
 	}
 
