@@ -50,9 +50,6 @@ public class MovieActivity extends ListActivity implements OnClickListener {
 		mListView = (ListView) findViewById(android.R.id.list);
 		LayoutInflater inflater = getLayoutInflater();
 		View header = (View) inflater.inflate(R.layout.movie_detail_header, null, false);
-		TextView v = new TextView(this);
-		v.setText("LALALA");
-		// mListView.addHeaderView(header, null, false);
 		mListView.addHeaderView(header);
 		mTitleText = (TextView) header.findViewById(R.id.movie_detail_title);
 		mTitleText.setText(movie.getTitle());
