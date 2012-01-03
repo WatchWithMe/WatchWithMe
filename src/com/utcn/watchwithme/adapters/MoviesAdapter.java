@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,12 +13,13 @@ import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.objects.Movie;
 import com.utcn.watchwithme.services.ImageService;
 
-public class MoviesAdapter extends BaseAdapter {
+public class MoviesAdapter extends MyBaseAdapter {
 
 	private ArrayList<Movie> mMovies;
 	private Context mContext;
 
 	public MoviesAdapter(Context context, ArrayList<Movie> movies) {
+		super(context);
 		this.mMovies = movies;
 		mContext = context;
 	}
@@ -68,6 +68,7 @@ public class MoviesAdapter extends BaseAdapter {
 				holder.icon.setImageBitmap(bmp);
 			} else {
 				holder.icon.setImageResource(R.drawable.no_image);
+				loadImage(imageURL);
 			}
 		} else {
 			if (movie.getIcon() == -1) {

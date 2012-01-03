@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import com.utcn.watchwithme.objects.Showtime;
+import com.utcn.watchwithme.repository.InternalShowtimeRepository;
 import com.utcn.watchwithme.repository.RemoteShowtimeRepository;
-import com.utcn.watchwithme.repository.StaticShowtimeRepository;
 
 /**
  * 
@@ -19,6 +19,7 @@ public class ShowtimeService {
 	private static HashSet<Integer> obtainedCinemas = new HashSet<Integer>();
 	private static HashSet<Integer> obtainedMovies = new HashSet<Integer>();
 	private static boolean flag;
+	private static InternalShowtimeRepository internal;
 
 	public static void eraseData() {
 		showtimeList.clear();
@@ -43,9 +44,16 @@ public class ShowtimeService {
 		}
 		list = RemoteShowtimeRepository.getForCinema(id);
 		if (list == null) {
-			list = StaticShowtimeRepository.getForCinema(id);
+			if (internal == null) {
+				internal = InternalShowtimeRepository.getInstance();
+			}
+			list = internal.getForCinema(id);
 			flag = false;
 		} else {
+			if (internal == null) {
+				internal = InternalShowtimeRepository.getInstance();
+			}
+			internal.addAll(list);
 			flag = true;
 		}
 		if (list.size() > 0) {
@@ -83,9 +91,16 @@ public class ShowtimeService {
 		}
 		list = RemoteShowtimeRepository.getForMovie(id);
 		if (list == null) {
-			list = StaticShowtimeRepository.getForMovie(id);
+			if (internal == null) {
+				internal = InternalShowtimeRepository.getInstance();
+			}
+			list = internal.getForMovie(id);
 			flag = false;
 		} else {
+			if (internal == null) {
+				internal = InternalShowtimeRepository.getInstance();
+			}
+			internal.addAll(list);
 			flag = true;
 		}
 		if (list.size() > 0) {

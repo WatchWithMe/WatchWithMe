@@ -57,11 +57,11 @@ public class InternalImageRepository {
 	}
 
 	public Bitmap loadImage(String url) {
-		if (url == null || !images.contains(url)) {
-			return null;
-		}
 		String filename = urlToFilename(url);
 		Bitmap bitmap = null;
+		if (hasImage(url) == false) {
+			return null;
+		}
 		try {
 			String path = Environment.getExternalStorageDirectory().toString();
 			InputStream fIn = null;
@@ -82,6 +82,9 @@ public class InternalImageRepository {
 	}
 
 	public boolean save(Bitmap bitmap, String url) {
+		if (bitmap == null) {
+			return false;
+		}
 		String filename = urlToFilename(url);
 		try {
 			String path = Environment.getExternalStorageDirectory().toString();

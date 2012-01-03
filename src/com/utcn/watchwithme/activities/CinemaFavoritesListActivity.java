@@ -1,14 +1,13 @@
 package com.utcn.watchwithme.activities;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +25,6 @@ import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.CinemaAdapter;
 import com.utcn.watchwithme.objects.Cinema;
 import com.utcn.watchwithme.services.CinemaService;
-import com.utcn.watchwithme.services.ImageService;
 
 /**
  * 
@@ -36,12 +34,13 @@ import com.utcn.watchwithme.services.ImageService;
 public class CinemaFavoritesListActivity extends ListActivity {
 
 	private final String DEBUG_TAG = "CinemaFavoritesListActivity";
+	private static final String PROGRESS_MESSAGE = "Please wait while loading...";
 
 	private ArrayList<Cinema> items = new ArrayList<Cinema>();
 	private ListView lv;
 	private CinemaAdapter adapter;
 
-	// private ProgressDialog dialog;
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +59,7 @@ public class CinemaFavoritesListActivity extends ListActivity {
 			}
 		});
 
-		// dialog = ProgressDialog.show(this, "",
-		// "Please wait for few seconds...", true);
+		dialog = ProgressDialog.show(this, "", PROGRESS_MESSAGE, true);
 		new LoadTask(this).execute();
 	}
 
@@ -83,6 +81,7 @@ public class CinemaFavoritesListActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.cinemas_sync_menu_option:
+			dialog = ProgressDialog.show(this, "", PROGRESS_MESSAGE, true);
 			CinemaService.eraseData();
 			items.clear();
 			adapter.notifyDataSetChanged();
@@ -117,16 +116,12 @@ public class CinemaFavoritesListActivity extends ListActivity {
 	}
 
 	public void dismissLoadingDialog() {
-		// dialog.dismiss();
+		dialog.dismiss();
 	}
 
 	private void changeContent(ArrayList<Cinema> cinemas) {
 		this.items = cinemas;
 		adapter.setItems(cinemas);
-	}
-
-	private void notifyAdapter() {
-		adapter.notifyDataSetChanged();
 	}
 
 	private void showAlert(String message) {
@@ -164,48 +159,10 @@ public class CinemaFavoritesListActivity extends ListActivity {
 			if (cinemas != null) {
 				weakActivity.get().changeContent(cinemas);
 				if (!CinemaService.updated()) {
-					// weakActivity.get().showAlert(
-					// "Connection to the server failed.\n"
-					// + "Data might be outdated.");
+					weakActivity.get().showAlert(
+							"Connection to the server failed.\n"
+									+ "Data might be outdated.");
 				}
-				for (Cinema c : cinemas) {
-					if (c.getImageURL() != null) {
-						new ImageTask(weakActivity.get()).execute(c
-								.getImageURL());
-					}
-				}
-			}
-		}
-	}
-
-	private static class ImageTask extends AsyncTask<String, Exception, Bitmap> {
-
-		private WeakReference<CinemaFavoritesListActivity> weakActivity;
-
-		public ImageTask(CinemaFavoritesListActivity activity) {
-			this.weakActivity = new WeakReference<CinemaFavoritesListActivity>(
-					activity);
-		}
-
-		@Override
-		protected Bitmap doInBackground(String... urls) {
-			try {
-				ImageService is = ImageService.getInstance();
-				return is.loadImage(urls[0]);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bmp) {
-			try {
-				if (bmp != null) {
-					weakActivity.get().notifyAdapter();
-				}
-			} catch (Exception e) {
-				Log.e("ImageTask", "error here");
 			}
 		}
 	}

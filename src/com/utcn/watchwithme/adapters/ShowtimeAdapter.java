@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,14 +21,15 @@ import com.utcn.watchwithme.services.ImageService;
  * @author Vlad
  * 
  */
-public class ShowtimeAdapter extends BaseAdapter {
+public class ShowtimeAdapter extends MyBaseAdapter {
 
 	private LayoutInflater mInflater;
 	private ArrayList<Showtime> items;
 	private boolean mForMovies;
 
-	public ShowtimeAdapter(Context context, ArrayList<Showtime> items, boolean forMovies) {
-		// Cache the LayoutInflate to avoid asking for a new one each time.
+	public ShowtimeAdapter(Context context, ArrayList<Showtime> items,
+			boolean forMovies) {
+		super(context);
 		mInflater = LayoutInflater.from(context);
 		this.items = items;
 		this.mForMovies = forMovies;
@@ -63,10 +63,14 @@ public class ShowtimeAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.showtime_list_item, null);
 
 			holder = new ViewHolder();
-			holder.image = (ImageView) convertView.findViewById(R.id.showtime_image);
-			holder.title = (TextView) convertView.findViewById(R.id.showtime_title);
-			holder.hours = (TextView) convertView.findViewById(R.id.showtime_hours);
-			holder.price = (TextView) convertView.findViewById(R.id.showtime_price);
+			holder.image = (ImageView) convertView
+					.findViewById(R.id.showtime_image);
+			holder.title = (TextView) convertView
+					.findViewById(R.id.showtime_title);
+			holder.hours = (TextView) convertView
+					.findViewById(R.id.showtime_hours);
+			holder.price = (TextView) convertView
+					.findViewById(R.id.showtime_price);
 
 			convertView.setTag(holder);
 		} else {
@@ -95,6 +99,7 @@ public class ShowtimeAdapter extends BaseAdapter {
 				holder.image.setImageBitmap(bmp);
 			} else {
 				holder.image.setImageResource(R.drawable.no_image);
+				loadImage(imageUrl);
 			}
 		}
 		// TODO Do not fall back to taking info from project folders

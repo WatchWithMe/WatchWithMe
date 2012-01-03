@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,13 +27,13 @@ import android.widget.GridView;
 import com.utcn.watchwithme.R;
 import com.utcn.watchwithme.adapters.MoviesAdapter;
 import com.utcn.watchwithme.objects.Movie;
-import com.utcn.watchwithme.services.ImageService;
 import com.utcn.watchwithme.services.MovieService;
 
 public class MovieGridActivity extends Activity {
 
 	private static final String DEBUG_TAG = "MovieGridActivity";
 	private static final int IGNORE = 1;
+	private static final String PROGRESS_MESSAGE = "Please wait while loading...";
 
 	private MoviesAdapter mAdapter;
 	private GridView mGridView;
@@ -52,7 +51,8 @@ public class MovieGridActivity extends Activity {
 
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				goToMovieActivity(position);
 			}
 		});
@@ -60,13 +60,16 @@ public class MovieGridActivity extends Activity {
 		edittext.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				movies = MovieService.searchForMovie(edittext.getText().toString());
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				movies = MovieService.searchForMovie(edittext.getText()
+						.toString());
 				mAdapter.setItems(movies);
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 			}
 
 			@Override
@@ -88,7 +91,7 @@ public class MovieGridActivity extends Activity {
 
 		registerForContextMenu(mGridView);
 
-		dialog = ProgressDialog.show(this, "", "Please wait for few seconds...", true);
+		dialog = ProgressDialog.show(this, "", PROGRESS_MESSAGE, true);
 		new LoadTask(this).execute();
 	}
 
@@ -125,6 +128,7 @@ public class MovieGridActivity extends Activity {
 			mAdapter.setItems(movies);
 			break;
 		case R.id.movies_sync_menu_option:
+			dialog = ProgressDialog.show(this, "", PROGRESS_MESSAGE, true);
 			MovieService.eraseData();
 			movies.clear();
 			mAdapter.notifyDataSetChanged();
@@ -135,7 +139,8 @@ public class MovieGridActivity extends Activity {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		if (v.getId() == R.id.grid) {
@@ -160,21 +165,25 @@ public class MovieGridActivity extends Activity {
 
 	private void ignoreConfirmation() {
 		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		alt_bld.setMessage("Do you really want to ignore this movie ?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				MovieService.ignoreMovie(pressedMovie.getId());
-				movies.remove(pressedMovie);
-				mAdapter.setItems(movies);
-				Log.i(DEBUG_TAG, "Clicked on Yes Button");
-			}
-		}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				Log.i(DEBUG_TAG, "Clicked on No Button");
-				dialog.cancel();
-			}
-		});
+		alt_bld.setMessage("Do you really want to ignore this movie ?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								MovieService.ignoreMovie(pressedMovie.getId());
+								movies.remove(pressedMovie);
+								mAdapter.setItems(movies);
+								Log.i(DEBUG_TAG, "Clicked on Yes Button");
+							}
+						})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						Log.i(DEBUG_TAG, "Clicked on No Button");
+						dialog.cancel();
+					}
+				});
 		AlertDialog alert = alt_bld.create();
 		alert.setTitle("Ignore " + pressedMovie.getTitle());
 		// Icon for AlertDialog
@@ -191,23 +200,21 @@ public class MovieGridActivity extends Activity {
 		mAdapter.setItems(movies);
 	}
 
-	private void notifyAdapter() {
-		mAdapter.notifyDataSetChanged();
-	}
-
 	private void showAlert(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setMessage(message);
-		ad.setButton("OK", new android.content.DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
+		ad.setButton("OK",
+				new android.content.DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 		ad.show();
 	}
 
-	private static class LoadTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
+	private static class LoadTask extends
+			AsyncTask<Void, Void, ArrayList<Movie>> {
 
 		private WeakReference<MovieGridActivity> weakActivity;
 
@@ -227,44 +234,10 @@ public class MovieGridActivity extends Activity {
 			if (movies != null) {
 				weakActivity.get().changeContent(movies);
 				if (!MovieService.updated()) {
-					weakActivity.get().showAlert("Connection to the server failed.\n" + "Data might be outdated.");
+					weakActivity.get().showAlert(
+							"Connection to the server failed.\n"
+									+ "Data might be outdated.");
 				}
-				for (Movie m : movies) {
-					if (m.getImageURL() != null) {
-						new ImageTask(weakActivity.get()).execute(m.getImageURL());
-					}
-				}
-			}
-		}
-	}
-
-	private static class ImageTask extends AsyncTask<String, Exception, Bitmap> {
-
-		private WeakReference<MovieGridActivity> weakActivity;
-
-		public ImageTask(MovieGridActivity activity) {
-			this.weakActivity = new WeakReference<MovieGridActivity>(activity);
-		}
-
-		@Override
-		protected Bitmap doInBackground(String... urls) {
-			try {
-				ImageService is = ImageService.getInstance();
-				return is.loadImage(urls[0]);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bmp) {
-			try {
-				if (bmp != null) {
-					weakActivity.get().notifyAdapter();
-				}
-			} catch (Exception e) {
-				Log.e("ImageTask", "error here");
 			}
 		}
 	}

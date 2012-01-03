@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,13 +19,13 @@ import com.utcn.watchwithme.services.ImageService;
  * @author Vlad
  * 
  */
-public class CinemaAdapter extends BaseAdapter {
+public class CinemaAdapter extends MyBaseAdapter {
 
 	private LayoutInflater mInflater;
 	private ArrayList<Cinema> items;
 
 	public CinemaAdapter(Context context, ArrayList<Cinema> items) {
-		// Cache the LayoutInflate to avoid asking for a new one each time.
+		super(context);
 		mInflater = LayoutInflater.from(context);
 		this.items = items;
 	}
@@ -82,6 +81,7 @@ public class CinemaAdapter extends BaseAdapter {
 				holder.icon.setImageBitmap(bmp);
 			} else {
 				holder.icon.setImageResource(R.drawable.no_image);
+				loadImage(imageURL);
 			}
 		} else {
 			if (cinema.getIcon() == -1) {

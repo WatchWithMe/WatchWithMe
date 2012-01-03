@@ -3,8 +3,8 @@ package com.utcn.watchwithme.services;
 import java.util.ArrayList;
 
 import com.utcn.watchwithme.objects.Movie;
+import com.utcn.watchwithme.repository.InternalMovieRepository;
 import com.utcn.watchwithme.repository.RemoteMovieRepository;
-import com.utcn.watchwithme.repository.StaticMovieRepository;
 
 /**
  * 
@@ -16,6 +16,9 @@ public class MovieService {
 	private static ArrayList<Movie> movieList = new ArrayList<Movie>();
 	private static Movie selected;
 	private static boolean flag;
+
+	private static InternalMovieRepository internalMovieRepository = InternalMovieRepository
+			.getInstance();
 
 	public static void eraseData() {
 		movieList.clear();
@@ -33,18 +36,20 @@ public class MovieService {
 		}
 		Movie m = RemoteMovieRepository.getMovie(id);
 		if (m != null) {
+			internalMovieRepository.saveMovie(m);
 			return m;
 		}
-		return StaticMovieRepository.getMovie(id);
+		return internalMovieRepository.getMovie(id);
 	}
 
 	public static ArrayList<Movie> getAllMovies() {
 		if (movieList.size() == 0 || flag == false) {
 			movieList = RemoteMovieRepository.getAllMovies();
 			if (movieList == null) {
-				movieList = StaticMovieRepository.getAllMovies();
+				movieList = internalMovieRepository.getAllMovies();
 				flag = false;
 			} else {
+				internalMovieRepository.saveAllMovies(movieList);
 				flag = true;
 			}
 			for (int i = 0; i < movieList.size(); i++)
@@ -76,16 +81,20 @@ public class MovieService {
 	}
 
 	public static void ignoreMovie(int id) {
-		for (Movie m : movieList) {
-			if (m.getId() == id) {
-				m.setIgnored(true);
+		for (Movie movie : movieList) {
+			if (movie.getId() == id) {
+				movie.setIgnored(true);
+				internalMovieRepository.updateMovie(movie);
 			}
 		}
 	}
 
 	public static void unignoreMovies() {
-		for (Movie m : movieList) {
-			m.setIgnored(false);
+		for (Movie movie : movieList) {
+			if (movie.isIgnored()) {
+				movie.setIgnored(false);
+				internalMovieRepository.updateMovie(movie);
+			}
 		}
 	}
 

@@ -7,6 +7,7 @@ public class Showtime {
 	private String[] dates;
 	private String hours;
 	private double price;
+	private String st;
 
 	public Showtime() {
 	}
@@ -24,6 +25,7 @@ public class Showtime {
 		this.movie = movie;
 		this.cinema = cinema;
 		this.price = price;
+		this.st = showtimes;
 		String s[] = showtimes.split("[ ]", 2);
 		this.hours = s[1];
 
@@ -50,6 +52,10 @@ public class Showtime {
 	@Override
 	public int hashCode() {
 		return movie.hashCode() * 37 + cinema.hashCode();
+	}
+
+	public String getSt() {
+		return st;
 	}
 
 	public String[] getShowtimes() {

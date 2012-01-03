@@ -1,6 +1,5 @@
 package com.utcn.watchwithme.activities;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -9,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +30,6 @@ import com.utcn.watchwithme.objects.Reminder;
 import com.utcn.watchwithme.objects.Showtime;
 import com.utcn.watchwithme.services.AgendaService;
 import com.utcn.watchwithme.services.CinemaService;
-import com.utcn.watchwithme.services.ImageService;
 import com.utcn.watchwithme.services.MovieService;
 import com.utcn.watchwithme.services.ShowtimeService;
 
@@ -44,6 +41,7 @@ import com.utcn.watchwithme.services.ShowtimeService;
 public class CinemaActivity extends Activity {
 
 	private final String DEBUG_TAG = "CinemaActivity";
+	private static final String PROGRESS_MESSAGE = "Please wait while loading...";
 	private final int INVITE = 1;
 	private final int REMIND = 2;
 	private final int IGNORE = 3;
@@ -73,13 +71,14 @@ public class CinemaActivity extends Activity {
 
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				goToMovieActivity(position);
 			}
 		});
 
 		registerForContextMenu(listview);
-		dialog = ProgressDialog.show(this, "", "Please wait for few seconds...", true);
+		dialog = ProgressDialog.show(this, "", PROGRESS_MESSAGE, true);
 		new LoadTask(this).execute();
 	}
 
@@ -103,6 +102,7 @@ public class CinemaActivity extends Activity {
 			refreshContent();
 			break;
 		case R.id.cinema_sync_menu_option:
+			dialog = ProgressDialog.show(this, "", PROGRESS_MESSAGE, true);
 			ShowtimeService.eraseData();
 			showtimes.clear();
 			adapter.notifyDataSetChanged();
@@ -121,16 +121,19 @@ public class CinemaActivity extends Activity {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		if (v.getId() == R.id.showtime_list_view) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			pressedShowtime = showtimes.get(info.position);
-			Log.i(DEBUG_TAG, "long pressed on " + pressedShowtime.getMovie().getTitle());
+			Log.i(DEBUG_TAG, "long pressed on "
+					+ pressedShowtime.getMovie().getTitle());
 			menu.setHeaderTitle(pressedShowtime.getMovie().getTitle());
 			SubMenu inviteMenu = menu.addSubMenu(INVITE, INVITE, 0, "Invite");
-			SubMenu remindMenu = menu.addSubMenu(REMIND, REMIND, 0, "Remind Me");
+			SubMenu remindMenu = menu
+					.addSubMenu(REMIND, REMIND, 0, "Remind Me");
 			String dates[] = pressedShowtime.getShowtimes();
 			for (int i = 0; i < dates.length; i++) {
 				inviteMenu.add(dates[i]);
@@ -160,7 +163,8 @@ public class CinemaActivity extends Activity {
 				Log.e(DEBUG_TAG, "Implement the invitation");
 				break;
 			case REMIND:
-				Reminder reminder = new Reminder(pressedShowtime, (String) item.getTitle());
+				Reminder reminder = new Reminder(pressedShowtime,
+						(String) item.getTitle());
 				AgendaService.add(reminder);
 				Log.i(DEBUG_TAG, reminder.toString());
 				break;
@@ -171,21 +175,26 @@ public class CinemaActivity extends Activity {
 
 	private void ignoreConfirmation() {
 		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		alt_bld.setMessage("Do you really want to ignore this movie ?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				MovieService.ignoreMovie(pressedShowtime.getMovie().getId());
-				showtimes.remove(pressedShowtime);
-				adapter.notifyDataSetChanged();
-				Log.i(DEBUG_TAG, "Clicked on Yes Button");
-			}
-		}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				Log.i(DEBUG_TAG, "Clicked on No Button");
-				dialog.cancel();
-			}
-		});
+		alt_bld.setMessage("Do you really want to ignore this movie ?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								MovieService.ignoreMovie(pressedShowtime
+										.getMovie().getId());
+								showtimes.remove(pressedShowtime);
+								adapter.notifyDataSetChanged();
+								Log.i(DEBUG_TAG, "Clicked on Yes Button");
+							}
+						})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						Log.i(DEBUG_TAG, "Clicked on No Button");
+						dialog.cancel();
+					}
+				});
 		AlertDialog alert = alt_bld.create();
 		alert.setTitle("Ignore " + pressedShowtime.getMovie().getTitle());
 		// Icon for AlertDialog
@@ -214,23 +223,21 @@ public class CinemaActivity extends Activity {
 		adapter.setItems(sts);
 	}
 
-	private void notifyAdapter() {
-		adapter.notifyDataSetChanged();
-	}
-
 	private void showAlert(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setMessage(message);
-		ad.setButton("OK", new android.content.DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
+		ad.setButton("OK",
+				new android.content.DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 		ad.show();
 	}
 
-	private static class LoadTask extends AsyncTask<Void, Void, ArrayList<Showtime>> {
+	private static class LoadTask extends
+			AsyncTask<Void, Void, ArrayList<Showtime>> {
 
 		private WeakReference<CinemaActivity> weakActivity;
 
@@ -240,7 +247,8 @@ public class CinemaActivity extends Activity {
 
 		@Override
 		protected ArrayList<Showtime> doInBackground(Void... params) {
-			return ShowtimeService.getForCinema(CinemaService.getSelected().getId());
+			return ShowtimeService.getForCinema(CinemaService.getSelected()
+					.getId());
 		}
 
 		@Override
@@ -249,44 +257,10 @@ public class CinemaActivity extends Activity {
 			if (sts != null) {
 				weakActivity.get().changeContent(sts);
 				if (!ShowtimeService.updated()) {
-					weakActivity.get().showAlert("Connection to the server failed.\n" + "Data might be outdated.");
+					weakActivity.get().showAlert(
+							"Connection to the server failed.\n"
+									+ "Data might be outdated.");
 				}
-				for (Showtime st : sts) {
-					if (st.getMovie().getImageURL() != null) {
-						new ImageTask(weakActivity.get()).execute(st.getMovie().getImageURL());
-					}
-				}
-			}
-		}
-	}
-
-	private static class ImageTask extends AsyncTask<String, Exception, Bitmap> {
-
-		private WeakReference<CinemaActivity> weakActivity;
-
-		public ImageTask(CinemaActivity activity) {
-			this.weakActivity = new WeakReference<CinemaActivity>(activity);
-		}
-
-		@Override
-		protected Bitmap doInBackground(String... urls) {
-			try {
-				ImageService is = ImageService.getInstance();
-				return is.loadImage(urls[0]);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bmp) {
-			try {
-				if (bmp != null) {
-					weakActivity.get().notifyAdapter();
-				}
-			} catch (Exception e) {
-				Log.e("ImageTask", "error here");
 			}
 		}
 	}

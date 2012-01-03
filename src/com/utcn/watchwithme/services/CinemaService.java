@@ -3,8 +3,8 @@ package com.utcn.watchwithme.services;
 import java.util.ArrayList;
 
 import com.utcn.watchwithme.objects.Cinema;
+import com.utcn.watchwithme.repository.InternalCinemaRepository;
 import com.utcn.watchwithme.repository.RemoteCinemaRepository;
-import com.utcn.watchwithme.repository.StaticCinemaRepository;
 
 /**
  * 
@@ -17,6 +17,9 @@ public class CinemaService {
 	private static ArrayList<Cinema> cinemaFavList = new ArrayList<Cinema>();
 	private static Cinema selected;
 	private static boolean flag;
+
+	private static InternalCinemaRepository internalCinemaRepository = InternalCinemaRepository
+			.getInstance();
 
 	public static void eraseData() {
 		cinemaList.clear();
@@ -36,18 +39,20 @@ public class CinemaService {
 
 		Cinema c = RemoteCinemaRepository.getCinema(id);
 		if (c != null) {
+			internalCinemaRepository.saveCinema(c);
 			return c;
 		}
-		return StaticCinemaRepository.getCinema(id);
+		return internalCinemaRepository.getCinema(id);
 	}
 
 	public static ArrayList<Cinema> getAllCinemas() {
 		if (cinemaList.size() == 0 || flag == false) {
 			cinemaList = RemoteCinemaRepository.getAllCinemas();
 			if (cinemaList == null) {
-				cinemaList = StaticCinemaRepository.getAllCinemas();
+				cinemaList = internalCinemaRepository.getAllCinemas();
 				flag = false;
 			} else {
+				internalCinemaRepository.saveAllCinemas(cinemaList);
 				flag = true;
 			}
 
@@ -87,5 +92,6 @@ public class CinemaService {
 				}
 			}
 		}
+		internalCinemaRepository.updateCinema(cinema);
 	}
 }
