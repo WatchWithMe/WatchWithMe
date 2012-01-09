@@ -42,27 +42,26 @@ public class MovieActivity extends ListActivity implements OnClickListener {
 	}
 
 	private void setUpAdapter() {
-		ShowtimeAdapter adapter = new ShowtimeAdapter(this, ShowtimeService.getForMovie(movie.getId()), false);
+		ShowtimeAdapter adapter = new ShowtimeAdapter(this,
+				ShowtimeService.getForMovie(movie.getId()), false);
 		setListAdapter(adapter);
 	}
 
 	private void setUpViews() {
 		mListView = (ListView) findViewById(android.R.id.list);
 		LayoutInflater inflater = getLayoutInflater();
-		View header = (View) inflater.inflate(R.layout.movie_detail_header, null, false);
+		View header = (View) inflater.inflate(R.layout.movie_detail_header,
+				null, false);
 		mListView.addHeaderView(header);
 		mTitleText = (TextView) header.findViewById(R.id.movie_detail_title);
 		mTitleText.setText(movie.getTitle());
 		mRatingBar = (RatingBar) header.findViewById(R.id.movie_detail_rating);
-		mRatingText = (TextView) header.findViewById(R.id.movie_detail_rating_text);
+		mRatingText = (TextView) header
+				.findViewById(R.id.movie_detail_rating_text);
 		mMovieIcon = (ImageView) header.findViewById(R.id.movie_detail_icon);
 		ImageService is = ImageService.getInstance();
 		if (movie.getImageURL() == null) {
-			if (movie.getIcon() != -1) {
-				mMovieIcon.setImageResource(movie.getIcon());
-			} else {
-				mMovieIcon.setImageResource(R.drawable.no_image);
-			}
+			mMovieIcon.setImageResource(R.drawable.no_image);
 		} else {
 			try {
 				mMovieIcon.setImageBitmap(is.getImage(movie.getImageURL()));
@@ -70,7 +69,8 @@ public class MovieActivity extends ListActivity implements OnClickListener {
 				mMovieIcon.setImageResource(R.drawable.no_image);
 			}
 		}
-		mRateButton = (Button) header.findViewById(R.id.movie_detail_rate_button);
+		mRateButton = (Button) header
+				.findViewById(R.id.movie_detail_rate_button);
 		mRateButton.setOnClickListener(this);
 		mYoutubeIcon = (ImageView) header.findViewById(R.id.movie_youtube);
 		mYoutubeIcon.setOnClickListener(this);
@@ -95,7 +95,8 @@ public class MovieActivity extends ListActivity implements OnClickListener {
 	}
 
 	private void updateRatingText() {
-		mRatingText.setText("Rating: " + movie.getRating() + ", Total: " + movie.getRatingCount());
+		mRatingText.setText("Rating: " + movie.getRating() + ", Total: "
+				+ movie.getRatingCount());
 		mRatingBar.setRating(movie.getRating());
 	}
 

@@ -71,11 +71,7 @@ public class MoviesAdapter extends MyBaseAdapter {
 				loadImage(imageURL);
 			}
 		} else {
-			if (movie.getIcon() == -1) {
-				holder.icon.setImageResource(R.drawable.no_image);
-			} else {
-				holder.icon.setImageResource(movie.getIcon());
-			}
+			holder.icon.setImageResource(R.drawable.no_image);
 		}
 		holder.name.setText(movie.getTitle());
 		return convertView;

@@ -102,14 +102,6 @@ public class ShowtimeAdapter extends MyBaseAdapter {
 				loadImage(imageUrl);
 			}
 		}
-		// TODO Do not fall back to taking info from project folders
-		// else {
-		// if (showtime.getMovie().getIcon() != -1) {
-		// holder.image.setImageResource(movie.getIcon());
-		// } else {
-		// holder.image.setImageResource(R.drawable.no_image);
-		// }
-		// }
 		holder.title.setText(title);
 		holder.hours.setText(showtime.getHours());
 		holder.price.setText(showtime.getPriceString());

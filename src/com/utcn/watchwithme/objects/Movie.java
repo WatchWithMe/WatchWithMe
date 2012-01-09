@@ -15,7 +15,6 @@ public class Movie implements Serializable {
 	private int length; // in minutes
 	private float rating;
 
-	private int icon = -1;
 	private boolean ignored = false;
 	private int ratingCounts;
 
@@ -32,24 +31,6 @@ public class Movie implements Serializable {
 		this.trailerURL = trailer;
 		this.imageURL = image;
 		this.rating = rating;
-	}
-
-	public Movie(String title, int icon) {
-		this.id = nextID++;
-		this.title = title;
-		this.icon = icon;
-		this.details = "";
-		this.trailerURL = "";
-		this.length = 100;
-	}
-
-	public Movie(String title, int icon, String url) {
-		this.id = nextID++;
-		this.title = title;
-		this.icon = icon;
-		this.details = "";
-		this.length = 100;
-		this.trailerURL = url;
 	}
 
 	@Override
@@ -69,10 +50,6 @@ public class Movie implements Serializable {
 	@Override
 	public int hashCode() {
 		return (new Integer(id)).hashCode();
-	}
-
-	public int getIcon() {
-		return icon;
 	}
 
 	public int getId() {
