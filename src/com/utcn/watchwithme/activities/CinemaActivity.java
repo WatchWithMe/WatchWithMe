@@ -71,8 +71,7 @@ public class CinemaActivity extends Activity {
 
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				goToMovieActivity(position);
 			}
 		});
@@ -121,19 +120,16 @@ public class CinemaActivity extends Activity {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		if (v.getId() == R.id.showtime_list_view) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			pressedShowtime = showtimes.get(info.position);
-			Log.i(DEBUG_TAG, "long pressed on "
-					+ pressedShowtime.getMovie().getTitle());
+			Log.i(DEBUG_TAG, "long pressed on " + pressedShowtime.getMovie().getTitle());
 			menu.setHeaderTitle(pressedShowtime.getMovie().getTitle());
 			SubMenu inviteMenu = menu.addSubMenu(INVITE, INVITE, 0, "Invite");
-			SubMenu remindMenu = menu
-					.addSubMenu(REMIND, REMIND, 0, "Remind Me");
+			SubMenu remindMenu = menu.addSubMenu(REMIND, REMIND, 0, "Remind Me");
 			String dates[] = pressedShowtime.getShowtimes();
 			for (int i = 0; i < dates.length; i++) {
 				inviteMenu.add(dates[i]);
@@ -159,14 +155,13 @@ public class CinemaActivity extends Activity {
 		default:
 			switch (menuSelection) {
 			case INVITE:
-				sendEmail(pressedShowtime.getMovie().getTitle(),
-						(String) item.getTitle());
+				sendEmail(pressedShowtime.getMovie().getTitle(), (String) item.getTitle());
 				Log.e(DEBUG_TAG, "Implement the invitation");
 				break;
 			case REMIND:
-				Reminder reminder = new Reminder(pressedShowtime,
-						(String) item.getTitle());
+				Reminder reminder = new Reminder(pressedShowtime, (String) item.getTitle());
 				AgendaService.add(reminder);
+				// TODO Store to DB and push changes to server.
 				Log.i(DEBUG_TAG, reminder.toString());
 				break;
 			}
@@ -176,39 +171,30 @@ public class CinemaActivity extends Activity {
 
 	private void sendEmail(String movie, String date) {
 		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
-				new String[] { "", });
-		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-				"Invitation to a movie");
-		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-				"Hey,\n\n Do you want to come to the movie \"" + movie
-						+ "\" on " + date + "?");
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "", });
+		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation to a movie");
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Hey,\n\n Do you want to come to the movie \"" + movie + "\" on " + date + "?");
 		emailIntent.setType("text/plain");
 		startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 	}
 
 	private void ignoreConfirmation() {
 		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		alt_bld.setMessage("Do you really want to ignore this movie ?")
-				.setCancelable(false)
-				.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								MovieService.ignoreMovie(pressedShowtime
-										.getMovie().getId());
-								showtimes.remove(pressedShowtime);
-								adapter.notifyDataSetChanged();
-								Log.i(DEBUG_TAG, "Clicked on Yes Button");
-							}
-						})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						Log.i(DEBUG_TAG, "Clicked on No Button");
-						dialog.cancel();
-					}
-				});
+		alt_bld.setMessage("Do you really want to ignore this movie ?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				MovieService.ignoreMovie(pressedShowtime.getMovie().getId());
+				showtimes.remove(pressedShowtime);
+				adapter.notifyDataSetChanged();
+				Log.i(DEBUG_TAG, "Clicked on Yes Button");
+			}
+		}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				Log.i(DEBUG_TAG, "Clicked on No Button");
+				dialog.cancel();
+			}
+		});
 		AlertDialog alert = alt_bld.create();
 		alert.setTitle("Ignore " + pressedShowtime.getMovie().getTitle());
 		// Icon for AlertDialog
@@ -240,18 +226,16 @@ public class CinemaActivity extends Activity {
 	private void showAlert(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setMessage(message);
-		ad.setButton("OK",
-				new android.content.DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+		ad.setButton("OK", new android.content.DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 		ad.show();
 	}
 
-	private static class LoadTask extends
-			AsyncTask<Void, Void, ArrayList<Showtime>> {
+	private static class LoadTask extends AsyncTask<Void, Void, ArrayList<Showtime>> {
 
 		private WeakReference<CinemaActivity> weakActivity;
 
@@ -261,8 +245,7 @@ public class CinemaActivity extends Activity {
 
 		@Override
 		protected ArrayList<Showtime> doInBackground(Void... params) {
-			return ShowtimeService.getForCinema(CinemaService.getSelected()
-					.getId());
+			return ShowtimeService.getForCinema(CinemaService.getSelected().getId());
 		}
 
 		@Override
@@ -271,9 +254,7 @@ public class CinemaActivity extends Activity {
 			if (sts != null) {
 				weakActivity.get().changeContent(sts);
 				if (!ShowtimeService.updated()) {
-					weakActivity.get().showAlert(
-							"Connection to the server failed.\n"
-									+ "Data might be outdated.");
+					weakActivity.get().showAlert("Connection to the server failed.\n" + "Data might be outdated.");
 				}
 			}
 		}

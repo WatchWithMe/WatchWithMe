@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:background="@drawable/wallpaper" >
+	android:background="@drawable/wallpaper"
+	android:orientation="vertical" >
+
+	<ListView
+		android:id="@android:id/list"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" >
+	</ListView>
 
 	<TextView
-        android:id="@+id/agendatext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Your personal agenda"/>
+		android:id="@android:id/empty"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:gravity="center"
+		android:text="You have no reminders set"
+		android:textColor="@android:color/white"
+		android:textSize="20sp" />
 
-</LinearLayout>
+</RelativeLayout>
