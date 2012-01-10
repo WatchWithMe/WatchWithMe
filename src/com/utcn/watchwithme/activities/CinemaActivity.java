@@ -159,7 +159,8 @@ public class CinemaActivity extends Activity {
 		default:
 			switch (menuSelection) {
 			case INVITE:
-				// invite
+				sendEmail(pressedShowtime.getMovie().getTitle(),
+						(String) item.getTitle());
 				Log.e(DEBUG_TAG, "Implement the invitation");
 				break;
 			case REMIND:
@@ -171,6 +172,19 @@ public class CinemaActivity extends Activity {
 			}
 		}
 		return super.onContextItemSelected(item);
+	}
+
+	private void sendEmail(String movie, String date) {
+		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,
+				new String[] { "", });
+		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				"Invitation to a movie");
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+				"Hey,\n\n Do you want to come to the movie \"" + movie
+						+ "\" on " + date + "?");
+		emailIntent.setType("text/plain");
+		startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 	}
 
 	private void ignoreConfirmation() {
