@@ -56,4 +56,8 @@ public class InternalReminderRepository {
 	public void addReminder(Reminder reminder) {
 		helper.createReminder(reminder);
 	}
+
+	public void deleteAll() {
+		helper.deleteAll();
+	}
 }

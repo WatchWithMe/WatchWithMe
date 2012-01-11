@@ -23,7 +23,21 @@ public class AgendaService {
 		if (reminderList.size() == 0) {
 			reminderList = InternalReminderRepository.getInstance()
 					.getReminders();
+			for (int i = 0; i < reminderList.size(); i++)
+				for (int j = i + 1; j < reminderList.size(); j++) {
+					Reminder ri = reminderList.get(i);
+					Reminder rj = reminderList.get(j);
+					if (ri.getDate().compareTo(rj.getDate()) < 0) {
+						reminderList.set(i, rj);
+						reminderList.set(j, ri);
+					}
+				}
 		}
 		return reminderList;
+	}
+
+	public static void deleteAll() {
+		reminderList.clear();
+		InternalReminderRepository.getInstance().deleteAll();
 	}
 }

@@ -57,13 +57,14 @@ public final class R {
         public static final int cinema_icon=0x7f070007;
         public static final int cinema_list_text=0x7f07000b;
         public static final int cinema_location=0x7f070009;
-        public static final int cinema_menu_option=0x7f07002a;
+        public static final int cinema_menu_option=0x7f07002b;
         public static final int cinema_name=0x7f070008;
-        public static final int cinema_sync_menu_option=0x7f070024;
-        public static final int cinemas_sync_menu_option=0x7f070028;
-        public static final int directions_menu_option=0x7f07002c;
+        public static final int cinema_sync_menu_option=0x7f070025;
+        public static final int cinemas_sync_menu_option=0x7f070029;
+        public static final int delete_agenda_menu_option=0x7f070024;
+        public static final int directions_menu_option=0x7f07002d;
         public static final int edittext=0x7f07001b;
-        public static final int erase_menu_option=0x7f070029;
+        public static final int erase_menu_option=0x7f07002a;
         public static final int grid=0x7f07001c;
         public static final int main_title=0x7f07000c;
         public static final int mapView=0x7f070011;
@@ -77,9 +78,9 @@ public final class R {
         public static final int movie_item_icon=0x7f07001d;
         public static final int movie_item_title=0x7f07001e;
         public static final int movie_youtube=0x7f070014;
-        public static final int movies_sync_menu_option=0x7f07002d;
-        public static final int name_sort_menu_option=0x7f070026;
-        public static final int price_sort_menu_option=0x7f070027;
+        public static final int movies_sync_menu_option=0x7f07002e;
+        public static final int name_sort_menu_option=0x7f070027;
+        public static final int price_sort_menu_option=0x7f070028;
         public static final int rate_text=0x7f070015;
         public static final int relativeLayout1=0x7f07001f;
         public static final int rellaycinema=0x7f070003;
@@ -89,9 +90,9 @@ public final class R {
         public static final int showtime_price=0x7f070023;
         public static final int showtime_title=0x7f070021;
         public static final int title001=0x7f07001a;
-        public static final int unignore1_menu_option=0x7f07002e;
-        public static final int unignore_menu_option=0x7f070025;
-        public static final int user_position_menu_option=0x7f07002b;
+        public static final int unignore1_menu_option=0x7f07002f;
+        public static final int unignore_menu_option=0x7f070026;
+        public static final int user_position_menu_option=0x7f07002c;
     }
     public static final class layout {
         public static final int about_layout=0x7f030000;
@@ -110,11 +111,12 @@ public final class R {
         public static final int showtime_list_item=0x7f03000d;
     }
     public static final class menu {
-        public static final int cinema_menu=0x7f060000;
-        public static final int cinemas_menu=0x7f060001;
-        public static final int main_menu=0x7f060002;
-        public static final int map_menu=0x7f060003;
-        public static final int movies_menu=0x7f060004;
+        public static final int agenda_menu=0x7f060000;
+        public static final int cinema_menu=0x7f060001;
+        public static final int cinemas_menu=0x7f060002;
+        public static final int main_menu=0x7f060003;
+        public static final int map_menu=0x7f060004;
+        public static final int movies_menu=0x7f060005;
     }
     public static final class string {
         public static final int app_name=0x7f050001;
