@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     
     <item
-        android:drawable="@drawable/invitations_icon_pressed"
+        android:drawable="@drawable/about_icon_pressed"
         android:state_pressed="true" />
     
-     <item android:drawable="@drawable/invitations_icon"/>
+     <item android:drawable="@drawable/about_icon"/>
     
 </selector>

@@ -10,14 +10,17 @@
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:text="Personal agenda"
-    	android:textSize="15sp"
-    	android:textColor="@android:color/white"        
+    	android:textSize="30sp"
+    	android:textColor="@android:color/white"
+    	android:layout_marginTop="10dp"        
     	/>
         
 	<ListView
 		android:id="@android:id/list"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content" >
+		android:layout_height="wrap_content"
+		android:layout_below="@id/agenda_title"
+		android:layout_marginTop="10dp" >
 	</ListView>
 
 	<TextView

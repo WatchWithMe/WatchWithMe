@@ -19,7 +19,7 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 	/** Called when the activity is first created. */
 	private Button mButtonCinemas;
 	private Button mButtonMovies;
-	private Button mButtonNotifications;
+	private Button mButtonAbout;
 	private Button mButtonReminders;
 
 	private static Activity instance;
@@ -43,8 +43,8 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 		mButtonMovies = (Button) findViewById(R.id.button_movies);
 		mButtonMovies.setOnClickListener(this);
 
-		mButtonNotifications = (Button) findViewById(R.id.button_invitations);
-		mButtonNotifications.setOnClickListener(this);
+		mButtonAbout = (Button) findViewById(R.id.button_about);
+		mButtonAbout.setOnClickListener(this);
 
 		mButtonReminders = (Button) findViewById(R.id.button_reminders);
 		mButtonReminders.setOnClickListener(this);
@@ -63,9 +63,9 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 		startActivity(intent);
 	}
 
-	private void onNotificationsButtonPressed() {
+	private void onAboutButtonPressed() {
 		/* Handle click here */
-		Intent intent = new Intent(this, AgendaActivity.class);
+		Intent intent = new Intent(this, AboutActivity.class);
 		startActivity(intent);
 	}
 
@@ -84,8 +84,8 @@ public class WatchWithMeActivity extends Activity implements OnClickListener {
 		case R.id.button_movies:
 			onMoviesButtonPressed();
 			break;
-		case R.id.button_invitations:
-			onNotificationsButtonPressed();
+		case R.id.button_about:
+			onAboutButtonPressed();
 			break;
 		case R.id.button_reminders:
 			onRemindersButtonPressed();

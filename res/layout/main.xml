@@ -12,9 +12,9 @@
 		android:layout_centerHorizontal="true"
 		android:text="Watch With Me"
 		android:textSize="30sp"
-		android:textStyle="bold">
-	</TextView>
-	
+		android:textStyle="bold"
+		android:textColor="@android:color/white" />
+		
 	<LinearLayout
 		android:layout_width="300dp"
 		android:layout_height="wrap_content"
@@ -54,19 +54,7 @@
 		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal" >
-
-			<Button
-				android:id="@+id/button_invitations"
-				android:layout_height="150dp"
-				android:layout_width="60dp"
-				android:layout_weight="0.5"
-				android:background="@drawable/main_invitation_button"
-				android:textStyle="bold"
-				android:scaleType="fitXY"
-				android:layout_marginRight="20dp"
-				android:layout_marginTop="20dp"
-				android:text="Invitations" />
+			android:orientation="horizontal" >		
 
 			<Button
 				android:id="@+id/button_reminders"
@@ -76,9 +64,22 @@
 				android:background="@drawable/main_agenda_button"
 				android:textStyle="bold"
 				android:scaleType="fitXY"
+				android:layout_marginRight="20dp"
+				android:layout_marginTop="20dp"				
+				android:text="Agenda" />
+			
+			<Button
+				android:id="@+id/button_about"
+				android:layout_height="135dp"
+				android:layout_width="60dp"
+				android:layout_weight="0.5"
+				android:background="@drawable/main_about_button"
+				android:textStyle="bold"
+				android:scaleType="fitXY"
 				android:layout_marginLeft="20dp"
 				android:layout_marginTop="20dp"
-				android:text="Agenda" />
+				android:text="About" />
+			
 		</LinearLayout>
 	</LinearLayout>
 
