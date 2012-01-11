@@ -5,16 +5,20 @@ public class Reminder {
 	private Movie movie;
 	private Cinema cinema;
 	private String date;
-	private String contact;
 
 	public Reminder() {
+	}
+
+	public Reminder(Movie m, Cinema c, String date) {
+		this.movie = m;
+		this.cinema = c;
+		this.date = date;
 	}
 
 	public Reminder(Showtime showtime, String date) {
 		this.movie = showtime.getMovie();
 		this.cinema = showtime.getCinema();
 		this.date = date;
-		this.contact = "";
 	}
 
 	@Override
@@ -60,13 +64,4 @@ public class Reminder {
 	public void setDate(String date) {
 		this.date = date;
 	}
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
 }

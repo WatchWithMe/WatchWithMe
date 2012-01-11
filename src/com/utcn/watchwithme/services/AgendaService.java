@@ -3,6 +3,7 @@ package com.utcn.watchwithme.services;
 import java.util.ArrayList;
 
 import com.utcn.watchwithme.objects.Reminder;
+import com.utcn.watchwithme.repository.InternalReminderRepository;
 
 /**
  * 
@@ -15,9 +16,14 @@ public class AgendaService {
 
 	public static void add(Reminder reminder) {
 		reminderList.add(reminder);
+		InternalReminderRepository.getInstance().addReminder(reminder);
 	}
 
 	public static ArrayList<Reminder> getReminders() {
+		if (reminderList.size() == 0) {
+			reminderList = InternalReminderRepository.getInstance()
+					.getReminders();
+		}
 		return reminderList;
 	}
 }

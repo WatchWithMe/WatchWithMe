@@ -8,7 +8,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "watchwithme";
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	private static final String CREATE_MOVIES_TABLE = "create table movies "
 			+ "(_id integer primary key," + "title text not null,"
@@ -26,6 +26,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ "cid integer not null,"
 			+ "showtimes text not null," + "price real not null);";
 
+	private static final String CREATE_REMINDER_TABLE = "create table reminders"
+			+ "(_id integer primary key autoincrement,"
+			+ "mid integer not null,"
+			+ "cid integer not null,"
+			+ "date text not null);";
+
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -35,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_MOVIES_TABLE);
 		db.execSQL(CREATE_CINEMAS_TABLE);
 		db.execSQL(CREATE_SHOWTIMES_TABLE);
+		db.execSQL(CREATE_REMINDER_TABLE);
 	}
 
 	@Override
@@ -42,6 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS movies");
 		db.execSQL("DROP TABLE IF EXISTS cinemas");
 		db.execSQL("DROP TABLE IF EXISTS showtimes");
+		db.execSQL("DROP TABLE IF EXISTS reminders");
 		onCreate(db);
 	}
 }

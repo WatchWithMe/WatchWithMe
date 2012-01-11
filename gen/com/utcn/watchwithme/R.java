@@ -45,7 +45,7 @@ public final class R {
         public static final int youtube_logo=0x7f02001b;
     }
     public static final class id {
-        public static final int agendatext=0x7f070000;
+        public static final int agenda_title=0x7f070000;
         public static final int button_cinema=0x7f07000c;
         public static final int button_invitations=0x7f07000e;
         public static final int button_movies=0x7f07000d;
